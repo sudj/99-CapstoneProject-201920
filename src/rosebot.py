@@ -200,6 +200,20 @@ class ArmAndClaw(object):
 
 
     def calibrate_arm(self):
+
+        self.motor.turn_on(100)
+        while True:
+            if self.touch_sensor.is_pressed():
+                self.motor.turn_off()
+                break
+        self.motor.reset_position()
+        # position = abs(self.motor.get_position())
+        while True:
+            self.motor.turn_on(-100)
+            if self.motor.get_position() == -14.2 * 360 :
+                self.motor.turn_off()
+                break
+
         """
         Calibrates its Arm, that is:
           1. Raises its Arm until it is all the way UP
