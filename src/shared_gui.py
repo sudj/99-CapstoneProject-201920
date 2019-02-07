@@ -165,6 +165,9 @@ def handle_forward(left_entry_box, right_entry_box, mqtt_sender):
       :type  mqtt_sender:      com.MqttClient
     """
 
+    s = [int(left_entry_box.get()), int(right_entry_box.get())]
+    mqtt_sender.send_message('forward',s)
+
 
 def handle_backward(left_entry_box, right_entry_box, mqtt_sender):
     """
@@ -174,6 +177,8 @@ def handle_backward(left_entry_box, right_entry_box, mqtt_sender):
       :type  right_entry_box:  ttk.Entry
       :type  mqtt_sender:      com.MqttClient
     """
+    s = [-int(left_entry_box.get()),-int(right_entry_box.get()) ]
+    mqtt_sender.send_message('forward',s)
 
 def handle_left(left_entry_box, right_entry_box, mqtt_sender):
     """
@@ -195,11 +200,13 @@ def handle_right(left_entry_box, right_entry_box, mqtt_sender):
     """
 
 
+
 def handle_stop(mqtt_sender):
     """
     Tells the robot to stop.
       :type  mqtt_sender:  com.MqttClient
     """
+
 
 
 ###############################################################################
