@@ -25,5 +25,6 @@ class DelegateThatReceives(object):
         self.robot.arm_and_claw.calibrate_arm()
 
     def move_arm(self, position):
+        print('y')
         # self.robot.arm_and_claw.move_arm_to_position(position)
         print(position)
