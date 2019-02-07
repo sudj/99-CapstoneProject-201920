@@ -20,3 +20,10 @@ class DelegateThatReceives(object):
 
     def lower_arm(self):
         self.robot.arm_and_claw.lower_arm()
+
+    def calibrate_arm(self):
+        self.robot.arm_and_claw.calibrate_arm()
+
+    def move_arm(self, position):
+        # self.robot.arm_and_claw.move_arm_to_position(position)
+        print(position)
