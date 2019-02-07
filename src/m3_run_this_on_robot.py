@@ -18,10 +18,10 @@ def main():
       2. Communicates via MQTT with the GUI code that runs on the LAPTOP.
     """
 
-    print('start')
-    runTestArm()
+    # print('start')
+    # runTestArm()
 
-    # real_thing()
+    real_thing()
 
 
 def real_thing():

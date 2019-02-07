@@ -14,3 +14,9 @@ class DelegateThatReceives(object):
 
     def forward(self, leftSpeed, rightSpeed):
         self.robot.drive_system.go(int(leftSpeed), int(rightSpeed))
+
+    def raise_arm(self):
+        self.robot.arm_and_claw.raise_arm()
+
+    def lower_arm(self):
+        self.robot.arm_and_claw.lower_arm()
