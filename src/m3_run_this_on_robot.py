@@ -18,10 +18,10 @@ def main():
       2. Communicates via MQTT with the GUI code that runs on the LAPTOP.
     """
 
-    # print('start')
-    # runTestArm()
+    print('start')
+    runTestArm()
 
-    real_thing()
+    # real_thing()
 
 
 def real_thing():
@@ -43,7 +43,7 @@ def runTestArm():
     print('2')
     robot.arm_and_claw.calibrate_arm()
     print ('3')
-    robot.arm_and_claw.move_arm_to_position(90)
+    robot.arm_and_claw.move_arm_to_position(2500)
     print('4')
     robot.arm_and_claw.lower_arm()
     print('finish')

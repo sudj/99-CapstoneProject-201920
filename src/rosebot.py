@@ -91,7 +91,7 @@ class DriveSystem(object):
         self.go = (speed,speed)
 
         while True:
-            if time.time() - start >= seconds
+            if time.time() - start >= seconds:
                 self.stop()
                 break
 
@@ -248,7 +248,7 @@ class ArmAndClaw(object):
 
         self.motor.turn_on(100)
         while True:
-            if self.motor.get_position() == desired_arm_position:
+            if self.motor.get_position() >= desired_arm_position:
                 self.motor.turn_off()
                 break
 
