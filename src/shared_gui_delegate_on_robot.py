@@ -33,7 +33,10 @@ class DelegateThatReceives(object):
         # self.robot.arm_and_claw.move_arm_to_position(position)
         print(position)
 
-    def go_inches_encode(self, inches, speed):
+    def go_seconds(self, speed, seconds):
+        self.robot.drive_system.go_straight_for_seconds(seconds, speed)
+
+    def go_inches_encoder(self, inches, speed):
         self.robot.drive_system.go_straight_for_inches_using_time(inches, speed)
 
     def go_inches_time(self, inches, speed):
