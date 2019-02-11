@@ -102,6 +102,7 @@ def get_arm_frame(window, mqtt_sender):
     frame_label.grid(row=0, column=1)
     position_label.grid(row=1, column=0)
     position_entry.grid(row=1, column=1)
+    position_entry.insert(0, "0")
     move_arm_button.grid(row=1, column=2)
 
     blank_label.grid(row=2, column=1)
@@ -161,8 +162,10 @@ def get_drive_system_frame(window, mqtt_sender):
     stop_button = ttk.Button(frame, text='Stop')
     seconds_label = ttk.Label(frame, text='Seconds:')
     seconds_entry = ttk.Entry(frame, width=10)
+    seconds_entry.insert(0, "0")
     inches_label = ttk.Label(frame, text='Inches:')
     inches_entry = ttk.Entry(frame, width=10)
+    inches_entry.insert(0, "0")
     seconds_button = ttk.Button(frame, text='Seconds')
     inches_using_time = ttk.Button(frame, text='Inches-- time')
     inches_using_encoder = ttk.Button(frame, text='Inches-- encoder')
@@ -329,7 +332,7 @@ def handle_move_arm_to_position(arm_position_entry, mqtt_sender):
       :type  arm_position_entry  ttk.Entry
       :type  mqtt_sender:        com.MqttClient
     """
-    mqtt_sender.send_message(['move_arm', int(arm_position_entry.get())])
+    mqtt_sender.send_message('move_arm',[int(arm_position_entry.get())])
 
 
 ###############################################################################

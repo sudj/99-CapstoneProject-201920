@@ -16,23 +16,16 @@ class DelegateThatReceives(object):
         self.robot.drive_system.go(int(leftSpeed), int(rightSpeed))
 
     def raise_arm(self):
-        print('start')
         self.robot.arm_and_claw.raise_arm()
-        print('end')
 
     def lower_arm(self):
-        print('start')
         self.robot.arm_and_claw.lower_arm()
-        print('end')
 
     def calibrate_arm(self):
-        print('start')
         self.robot.arm_and_claw.calibrate_arm()
-        print('end')
 
     def move_arm(self, position):
-        print('y')
-        # self.robot.arm_and_claw.move_arm_to_position(position)
+        self.robot.arm_and_claw.move_arm_to_position(position)
         print(position)
 
     def go_seconds(self, speed, seconds):
