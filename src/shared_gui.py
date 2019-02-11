@@ -201,35 +201,35 @@ def beep_frame(window, mqtt_sender):
     frame.grid()
 
     frame_label = ttk.Label(frame, text='Beep System')
+    beep_number_label = ttk.Label(frame, text='Number of beeps:')
+    beep_number_entry = ttk.Entry(frame, width=8)
     beep_button = ttk.Button(frame, text='Beep')
-    beep_entry = ttk.Entry(frame, width=8)
-    beep_label = ttk.Label(frame, text='Length of Beep/Tone:')
-    tone = ttk.Button(frame, text='Tone')
-    tone_entry = ttk.Entry(frame, width=8)
-    tone_label = ttk.Label(frame, text='Frequency of tone:')
-    phrase = ttk.Button(frame, text='Speak the phrase')
+    tone_duration_label = ttk.Label(frame, text='Duration of Tone:')
+    tone_duration_entry = ttk.Entry(frame, width=8)
+    tone_frequency_label = ttk.Label(frame, text='Frequency of tone:')
+    tone_frequency_entry = ttk.Entry(frame, width=8)
+    tone_button = ttk.Button(frame, text='Tone')
     phrase_entry = ttk.Entry(frame, width=8)
     phrase_label = ttk.Label(frame, text='Enter the phrase here:')
-    blank_label = ttk.Label(frame, text="")
-    # blank_label2 = ttk.Label(frame, text="")
+    phrase_buttton = ttk.Button(frame, text='Speak the phrase')
 
     # Grid the widgets:
-    # blank_label.grid(row=5, column=1)
-    phrase.grid(row=7, column=1)
-    phrase_entry.grid(row=8, column=2)
-    phrase_label.grid(row=8, column=1)
-    tone_label.grid(row=5, column=2)
-    tone.grid(row=4, column=2)
-    tone_entry.grid(row=5, column=3)
-    beep_label.grid(row=5, column=0)
-    beep_entry.grid(row=5, column=1)
-    beep_button.grid(row=4, column=0)
     frame_label.grid(row=0, column=1)
+    beep_number_label.grid(row=1, column=0)
+    beep_number_entry.grid(row=1, column=1)
+    beep_button.grid(row=2, column=0)
+    tone_duration_label.grid(row=3, column=0)
+    tone_duration_entry.grid(row=3, column=1)
+    tone_frequency_label.grid(row=4, column=0)
+    tone_frequency_entry.grid(row=4, column=1)
+    tone_button.grid(row=5, column=0)
+    phrase_label.grid(row=6, column=0)
+    phrase_entry.grid(row=6, column=1)
+    phrase_buttton.grid(row=7, column=0)
 
-    tone["command"] = lambda: handle_frequency(mqtt_sender, tone_entry.get, beep_entry.get)
-    phrase["command"] = lambda: handle_phrase(mqtt_sender, phrase_entry.get)
-    beep_button["command"] = lambda: handle_beep(mqtt_sender, tone_entry.get)
-
+    beep_button["command"] = lambda: beep(mqtt_sender, beep_number_entry)
+    tone_button['command'] = lambda: tone(mqtt_sender, tone_duration_entry, tone_frequency_entry)
+    phrase_buttton['command'] = lambda: phrase(mqtt_sender, phrase_entry)
 
     return frame
 
@@ -389,18 +389,19 @@ def go_inches_encoder(mqtt_sender, left_speed_entry, right_speed_entry, inches_e
 ###############################################################################
 # Handlers for Buttons in the Beep frame.
 ###############################################################################
-def handle_beep(mqtt_sender,entry):
+def beep(mqtt_sender, number_beep_entry):
     """
     Tells the robot to move its Arm to the position in the given Entry box.
     The robot must have previously calibrated its Arm.
       :type  arm_position_entry  ttk.Entry
       :type  mqtt_sender:        com.MqttClient
     """
-    mqtt_sender.send_message('beep',[(entry),])
+    mqtt_sender('beep', [int(number_beep_entry.get())])
 
-def handle_frequency(mqtt_sender, tone_entry, duration_entry):
-    mqtt_sender.send_message('tone',[(tone_entry), (duration_entry)])
 
-def handle_phrase(mqtt_sender, phrase_entry):
-    mqtt_sender.send_message('phrase'[phrase_entry])
+def tone(mqtt_sender, duration_entry, frequency_entry):
+    mqtt_sender('tone', [int(duration_entry.get()), int(frequency_entry.get())])
 
+
+def phrase(mqtt_sender, phrase_entry):
+    mqtt_sender('phrase', [str(phrase_entry.get())])
