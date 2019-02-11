@@ -101,9 +101,9 @@ class DriveSystem(object):
         for the given number of inches, using the approximate
         conversion factor of 10.0 inches per second at 100 (full) speed.
         """
-        # seconds_per_inch_at_100 = 10.0
-        # seconds = abs(inches / seconds_per_inch_at_100)
-        # self.go_straight_for_seconds(seconds, speed)
+        seconds_per_inch_at_100 = 10.0
+        seconds = abs(inches / seconds_per_inch_at_100)
+        self.go_straight_for_seconds(seconds, speed)
 
         # initial_time = time.time()
         # self.left_motor.turn_on(speed)
@@ -120,11 +120,21 @@ class DriveSystem(object):
         at the given speed for the given number of inches,
         using the encoder (degrees traveled sensor) built into the motors.
         """
-        inches_per_degree = self.wheel_circumference / 360
-        initial_position = self.left_motor.get_position()
+        # inches_per_degree = self.wheel_circumference / 360
+        # initial_position = self.left_motor.get_position()
+        # while True:
+        #     self.go(speed, speed)
+        #     if (abs(initial_position - self.left_motor.get_position()) * inches_per_degree) >= inches:
+        #         self.stop()
+        #         break
+        print('here')
+        inches_per_degree = (1.3*math.pi) / 360
+        desired_degrees = inches / inches_per_degree
+        self.left_motor.reset_position()
+        self.go(speed, speed)
         while True:
-            self.go(speed, speed)
-            if (abs(initial_position - self.left_motor.get_position()) * inches_per_degree) >= inches:
+            angular_position = abs(self.left_motor.get_position())
+            if desired_degrees <= angular_position:
                 self.stop()
                 break
 
