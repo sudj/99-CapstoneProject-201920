@@ -55,6 +55,6 @@ class DelegateThatReceives(object):
         print('I will speak the phrase', phrase)
         self.robot.sound_system.speech_maker.speak(phrase)
 
-    def quit(self):
+    def is_quit(self):
         self.quit = True
 
