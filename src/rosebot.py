@@ -101,10 +101,18 @@ class DriveSystem(object):
         for the given number of inches, using the approximate
         conversion factor of 10.0 inches per second at 100 (full) speed.
         """
-        seconds_per_inch_at_100 = 10.0
+        # seconds_per_inch_at_100 = 10.0
         # seconds = abs(inches / seconds_per_inch_at_100)
-        seconds = 3
-        self.go_straight_for_seconds(seconds, speed)
+        # self.go_straight_for_seconds(seconds, speed)
+
+        # initial_time = time.time()
+        # self.left_motor.turn_on(speed)
+        # self.right_motor.turn_on(speed)
+        # while True:
+        #     if time.time() - initial_time >= seconds:
+        #         self.left_motor.turn_off()
+        #         self.right_motor.turn_off()
+        #         break
 
     def go_straight_for_inches_using_encoder(self, inches, speed):
         """
