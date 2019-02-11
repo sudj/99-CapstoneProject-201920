@@ -146,6 +146,44 @@ def get_control_frame(window, mqtt_sender):
 
     return frame
 
+def get_drive_system_frame(window, mqtt_sender):
+    frame = ttk.Frame(window, padding=10, borderwidth=5, relief="ridge")
+    frame.grid()
+
+    frame_label = ttk.Label(frame, text='Drive System')
+    left_speed_label = ttk.Label(frame, text='Left speed:')
+    right_speed_label = ttk.Label(frame,text='Right speed:')
+    left_speed_entry = ttk.Entry(frame, width=8)
+    right_speed_entry = ttk.Entry(frame, width=8)
+    go_button = ttk.Button(frame, text='Go')
+    stop_button = ttk.Button(frame, text='Stop')
+    seconds_label = ttk.Label(frame, text='Seconds:')
+    seconds_entry = ttk.Entry(frame, width=10)
+    inches_label = ttk.Label(frame, text='Inches:')
+    inches_entry = ttk.Entry(frame, width=10)
+    seconds_button = ttk.Button(frame, text='Seconds')
+    inches_using_time = ttk.Button(frame, text='Inches-- time')
+    inches_using_encoder = ttk.Button(frame, text='Inches-- encoder')
+
+    frame_label.grid(row=0, column=1)
+    left_speed_label.grid(row=1, column=0)
+    right_speed_label.grid(row=1, column=2)
+    left_speed_entry.grid(row=2, column=0)
+    right_speed_entry.grid(row=2, column=2)
+    go_button.grid(row=3, column=0)
+    stop_button.grid(row=3, column=2)
+    seconds_label.grid(row=4, column=0)
+    seconds_entry.grid(row=4, column=1)
+    inches_label.grid(row=5, column=0)
+    inches_entry.grid(row=5, column=1)
+    seconds_button.grid(row=6, column=0)
+    inches_using_time.grid(row=6, column=1)
+    inches_using_encoder.grid(row=6, column=2)
+
+    go_button["command"] = lambda: go(mqtt_sender)
+
+    return frame
+
 ###############################################################################
 ###############################################################################
 # The following specifies, for each Button,
@@ -180,6 +218,7 @@ def handle_backward(left_entry_box, right_entry_box, mqtt_sender):
     s = [-int(left_entry_box.get()),-int(right_entry_box.get()) ]
     mqtt_sender.send_message('forward',s)
 
+
 def handle_left(left_entry_box, right_entry_box, mqtt_sender):
     """
     Tells the robot to move using the speeds in the given entry boxes,
@@ -190,6 +229,7 @@ def handle_left(left_entry_box, right_entry_box, mqtt_sender):
     """
     s = [int(left_entry_box.get()), -int(right_entry_box.get())]
     mqtt_sender.send_message('forward', s)
+
 
 def handle_right(left_entry_box, right_entry_box, mqtt_sender):
     """
@@ -266,3 +306,10 @@ def handle_exit(mqtt_sender):
     Then exit this program.
       :type mqtt_sender: com.MqttClient
     """
+
+
+###############################################################################
+# Handlers for Buttons in the Drive System frame.
+###############################################################################
+def go(mqtt_sender):
+    print('go')
