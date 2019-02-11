@@ -28,3 +28,17 @@ class DelegateThatReceives(object):
         print('y')
         # self.robot.arm_and_claw.move_arm_to_position(position)
         print(position)
+
+    def go_inches_encode(self, inches, speed):
+        self.robot.drive_system.go_straight_for_inches_using_time(inches, speed)
+
+    def go_inches_time(self, inches, speed):
+        self.robot.drive_system.go_straight_for_inches_using_encoder(inches, speed)
+
+    def beep(self, times, frequency, duration):
+        print('I will beep', times, 'times')
+        print('I will play a tone at frequency', frequency, 'for duration', duration)
+
+    def phrase(self, phrase):
+        print('I will speak the phrase', phrase)
+
