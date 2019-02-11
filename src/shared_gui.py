@@ -216,6 +216,7 @@ def beep_frame(window, mqtt_sender):
     phrase_label = ttk.Label(frame, text='Enter the phrase here:')
     phrase_buttton = ttk.Button(frame, text='Speak the phrase')
 
+
     # Grid the widgets:
     frame_label.grid(row=0, column=1)
     beep_number_label.grid(row=1, column=0)
