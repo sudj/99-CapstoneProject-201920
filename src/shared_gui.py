@@ -402,5 +402,6 @@ def beep(mqtt_sender, number_beep_entry):
 def tone(mqtt_sender, duration_entry, frequency_entry):
     mqtt_sender('tone', [int(duration_entry.get()), int(frequency_entry.get())])
 
+
 def phrase(mqtt_sender, phrase_entry):
     mqtt_sender('phrase', [str(phrase_entry.get())])
