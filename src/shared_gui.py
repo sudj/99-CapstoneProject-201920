@@ -211,10 +211,10 @@ def beep_frame(window, mqtt_sender):
     phrase_entry = ttk.Entry(frame, width=8)
     phrase_label = ttk.Label(frame, text='Enter the phrase here:')
     blank_label = ttk.Label(frame, text="")
-    blank_label2 = ttk.Label(frame, text="")
+    # blank_label2 = ttk.Label(frame, text="")
 
     # Grid the widgets:
-    blank_label.grid(row=5, column=1)
+    # blank_label.grid(row=5, column=1)
     phrase.grid(row=7, column=1)
     phrase_entry.grid(row=8, column=2)
     phrase_label.grid(row=8, column=1)
@@ -222,9 +222,14 @@ def beep_frame(window, mqtt_sender):
     tone.grid(row=4, column=2)
     tone_entry.grid(row=5, column=3)
     beep_label.grid(row=5, column=0)
-    beep_entry.grid(row=4, column=1)
+    beep_entry.grid(row=5, column=1)
     beep_button.grid(row=4, column=0)
     frame_label.grid(row=0, column=1)
+
+    tone["command"] = lambda: handle_frequency(mqtt_sender, tone_entry.get, beep_entry.get)
+    phrase["command"] = lambda: handle_phrase(mqtt_sender, phrase_entry.get)
+    beep_button["command"] = lambda: handle_beep(mqtt_sender, tone_entry.get)
+
 
     return frame
 
@@ -384,12 +389,18 @@ def go_inches_encoder(mqtt_sender, left_speed_entry, right_speed_entry, inches_e
 ###############################################################################
 # Handlers for Buttons in the Beep frame.
 ###############################################################################
-def handle_beep(mqtt_sender, times, freq, duration):
+def handle_beep(mqtt_sender,entry):
     """
     Tells the robot to move its Arm to the position in the given Entry box.
     The robot must have previously calibrated its Arm.
       :type  arm_position_entry  ttk.Entry
       :type  mqtt_sender:        com.MqttClient
     """
-    mqtt_sender.send_message('beep')
+    mqtt_sender.send_message('beep',[(entry),])
+
+def handle_frequency(mqtt_sender, tone_entry, duration_entry):
+    mqtt_sender.send_message('tone',[(tone_entry), (duration_entry)])
+
+def handle_phrase(mqtt_sender, phrase_entry):
+    mqtt_sender.send_message('phrase'[phrase_entry])
 
