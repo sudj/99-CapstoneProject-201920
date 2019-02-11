@@ -340,3 +340,8 @@ def go_inches_time(mqtt_sender, left_speed_entry, right_speed_entry, inches_entr
 
 def go_inches_encoder(mqtt_sender, left_speed_entry, right_speed_entry, inches_entry):
     mqtt_sender.send_message(['go_inches_encoder', int(left_speed_entry.get()), int(right_speed_entry.get()), int(inches_entry.get())])
+
+
+###############################################################################
+# Handlers for Buttons in the Beep frame.
+###############################################################################
