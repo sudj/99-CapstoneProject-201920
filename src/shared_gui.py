@@ -381,3 +381,12 @@ def go_inches_encoder(mqtt_sender, left_speed_entry, right_speed_entry, inches_e
 ###############################################################################
 # Handlers for Buttons in the Beep frame.
 ###############################################################################
+def handle_beep(mqtt_sender):
+    """
+    Tells the robot to move its Arm to the position in the given Entry box.
+    The robot must have previously calibrated its Arm.
+      :type  arm_position_entry  ttk.Entry
+      :type  mqtt_sender:        com.MqttClient
+    """
+    mqtt_sender.send_message('beep')
+
