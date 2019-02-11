@@ -34,19 +34,19 @@ def real_thing(robot):
 
 def test_drive(robot):
     robot.drive_system.go(100, -100)
-    time.sleep(1000)
+    time.sleep(10)
     print('Go method finished')
     robot.drive_system.stop()
     print('stop method finished')
     robot.drive_system.go_straight_for_seconds(3, 100)
-    time.sleep(1000)
+    time.sleep(10)
     print('go straight for seconds method finished')
     robot.drive_system.stop()
     robot.drive_system.go_straight_for_inches_using_time(3, 50)
-    time.sleep(1000)
+    time.sleep(10)
     print('go straight for inches using time finished')
     robot.drive_system.stop()
-    robot.drive_system.go_straight_for_inches_using_encoder(10, 200)
+    robot.drive_system.go_straight_for_inches_using_encoder(10, 100)
     print('go straight for inches using encoder finished')
 
 
