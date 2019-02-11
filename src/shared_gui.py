@@ -180,7 +180,11 @@ def get_drive_system_frame(window, mqtt_sender):
     inches_using_time.grid(row=6, column=1)
     inches_using_encoder.grid(row=6, column=2)
 
-    go_button["command"] = lambda: go(mqtt_sender)
+    go_button["command"] = lambda: go(mqtt_sender, left_speed_entry, right_speed_entry)
+    stop_button["command"] = lambda: stop(mqtt_sender)
+    seconds_button["command"] = lambda: go_seconds(mqtt_sender, left_speed_entry, right_speed_entry, seconds_entry)
+    inches_using_time["command"] = lambda: go_inches_time(mqtt_sender, left_speed_entry, right_speed_entry, inches_entry)
+    inches_using_encoder["command"] = lambda: go_inches_encoder(mqtt_sender, left_speed_entry, right_speed_entry, inches_entry)
 
     return frame
 
@@ -311,5 +315,27 @@ def handle_exit(mqtt_sender):
 ###############################################################################
 # Handlers for Buttons in the Drive System frame.
 ###############################################################################
-def go(mqtt_sender):
-    print('go')
+def go(mqtt_sender, left_speed_entry, right_speed_entry):
+    """
+        :type  left_speed_entry  ttk.Entry
+        :type  right_speed_entry  ttk.Entry
+        :type  mqtt_sender:        com.MqttClient
+      """
+    print('go', int(left_speed_entry.get()), int(right_speed_entry.get()))
+    mqtt_sender.send_message(['forward', int(left_speed_entry.get()), int(right_speed_entry.get())])
+
+
+def stop(mqtt_sender):
+    mqtt_sender.send_message(['forward', 0, 0])
+
+
+def go_seconds(mqtt_sender, left_speed_entry, right_speed_entry, seconds_entry):
+    mqtt_sender.send_message(['go_seconds', int(left_speed_entry.get()), int(right_speed_entry.get()), int(seconds_entry.get())])
+
+
+def go_inches_time(mqtt_sender, left_speed_entry, right_speed_entry, inches_entry):
+    mqtt_sender.send_message(['go_inches_time', int(left_speed_entry.get()), int(right_speed_entry.get()), int(inches_entry.get())])
+
+
+def go_inches_encoder(mqtt_sender, left_speed_entry, right_speed_entry, inches_entry):
+    mqtt_sender.send_message(['go_inches_encoder', int(left_speed_entry.get()), int(right_speed_entry.get()), int(inches_entry.get())])
