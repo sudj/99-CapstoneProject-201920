@@ -47,7 +47,6 @@ class DelegateThatReceives(object):
         for k in range(times):
             self.robot.sound_system.beeper.beep().wait()
 
-
     def tone(self, duration, frequency):
         print('I will play a tone at Frequency', frequency, 'for duration', duration)
         self.robot.sound_system.tone_maker.play_tone(frequency, duration)

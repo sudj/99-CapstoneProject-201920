@@ -398,12 +398,12 @@ def beep(mqtt_sender, number_beep_entry):
       :type  arm_position_entry  ttk.Entry
       :type  mqtt_sender:        com.MqttClient
     """
-    mqtt_sender('beep', [int(number_beep_entry.get())])
+    mqtt_sender.send_message('beep', [int(number_beep_entry.get())])
 
 
 def tone(mqtt_sender, duration_entry, frequency_entry):
-    mqtt_sender('tone', [int(duration_entry.get()), int(frequency_entry.get())])
+    mqtt_sender.send_message('tone', [int(duration_entry.get()), int(frequency_entry.get())])
 
 
 def phrase(mqtt_sender, phrase_entry):
-    mqtt_sender('phrase', [str(phrase_entry.get())])
+    mqtt_sender.send_message('phrase', [str(phrase_entry.get())])

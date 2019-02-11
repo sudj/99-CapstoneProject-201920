@@ -32,8 +32,8 @@ def real_thing():
 
     while True:
         time.sleep(0.01)
-        if delegate.is_time_to_quit:
-            break
+        # if delegate.is_time_to_quit:
+        #     break
 
 
 def runTestArm():
