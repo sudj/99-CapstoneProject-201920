@@ -155,7 +155,9 @@ def get_drive_system_frame(window, mqtt_sender):
     left_speed_label = ttk.Label(frame, text='Left speed:')
     right_speed_label = ttk.Label(frame,text='Right speed:')
     left_speed_entry = ttk.Entry(frame, width=8)
+    left_speed_entry.insert(0, "100")
     right_speed_entry = ttk.Entry(frame, width=8)
+    right_speed_entry.insert(0, "100")
     go_button = ttk.Button(frame, text='Go')
     stop_button = ttk.Button(frame, text='Stop')
     seconds_label = ttk.Label(frame, text='Seconds:')
@@ -188,6 +190,15 @@ def get_drive_system_frame(window, mqtt_sender):
     inches_using_encoder["command"] = lambda: go_inches_encoder(mqtt_sender, left_speed_entry, right_speed_entry, inches_entry)
 
     return frame
+
+
+def beep_frame(window, mqtt_sender):
+    frame = ttk.Frame(window, padding=10, borderwidth=5, relief="ridge")
+    frame.grid()
+
+    frame_label = ttk.Label(frame, text='Beep System')
+
+    frame_label.grid(row=0 , column=0)
 
 ###############################################################################
 ###############################################################################
@@ -323,23 +334,23 @@ def go(mqtt_sender, left_speed_entry, right_speed_entry):
         :type  mqtt_sender:        com.MqttClient
       """
     print('go', int(left_speed_entry.get()), int(right_speed_entry.get()))
-    mqtt_sender.send_message(['forward', int(left_speed_entry.get()), int(right_speed_entry.get())])
+    mqtt_sender.send_message('forward', [int(left_speed_entry.get()), int(right_speed_entry.get())])
 
 
 def stop(mqtt_sender):
-    mqtt_sender.send_message(['forward', 0, 0])
+    mqtt_sender.send_message('forward', [0, 0])
 
 
 def go_seconds(mqtt_sender, left_speed_entry, right_speed_entry, seconds_entry):
-    mqtt_sender.send_message(['go_seconds', int(left_speed_entry.get()), int(right_speed_entry.get()), int(seconds_entry.get())])
+    mqtt_sender.send_message('go_seconds', [int(left_speed_entry.get()), int(right_speed_entry.get()), int(seconds_entry.get())])
 
 
 def go_inches_time(mqtt_sender, left_speed_entry, right_speed_entry, inches_entry):
-    mqtt_sender.send_message(['go_inches_time', int(left_speed_entry.get()), int(right_speed_entry.get()), int(inches_entry.get())])
+    mqtt_sender.send_message('go_inches_time', [int(left_speed_entry.get()), int(right_speed_entry.get()), int(inches_entry.get())])
 
 
 def go_inches_encoder(mqtt_sender, left_speed_entry, right_speed_entry, inches_entry):
-    mqtt_sender.send_message(['go_inches_encoder', int(left_speed_entry.get()), int(right_speed_entry.get()), int(inches_entry.get())])
+    mqtt_sender.send_message('go_inches_encoder', [int(left_speed_entry.get()), int(right_speed_entry.get()), int(inches_entry.get())])
 
 
 ###############################################################################
