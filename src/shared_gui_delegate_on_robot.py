@@ -11,7 +11,7 @@ class DelegateThatReceives(object):
     def __init__(self, robot):
         """:type robot: rosebot.RoseBot"""
         self.robot = robot
-        self.quit = False
+        self.is_quit = False
 
     def forward(self, leftSpeed, rightSpeed):
         self.robot.drive_system.go(int(leftSpeed), int(rightSpeed))
@@ -56,6 +56,6 @@ class DelegateThatReceives(object):
         self.robot.sound_system.speech_maker.speak(phrase)
 
     def is_quit(self):
-        self.quit = True
+        self.is_quit = True
 
 

@@ -32,7 +32,7 @@ def real_thing(robot):
 
     while True:
         time.sleep(0.01)
-        if delagate_receiver.quit:
+        if delagate_receiver.is_quit:
             break
 
 def test_drive(robot):
