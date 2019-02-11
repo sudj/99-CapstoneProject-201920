@@ -49,10 +49,11 @@ class DelegateThatReceives(object):
 
     def tone(self, duration, frequency):
         print('I will play a tone at Frequency', frequency, 'for duration', duration)
-        self.robot.sound_system.tone_maker.play_tone(frequency, duration)
+        self.robot.sound_system.tone_maker.play_tone(frequency, duration*1000)
 
     def phrase(self, phrase):
         print('I will speak the phrase', phrase)
+        self.robot.sound_system.speech_maker.speak(phrase)
 
     def quit(self):
         self.quit = True
