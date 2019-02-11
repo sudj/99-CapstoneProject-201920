@@ -253,7 +253,7 @@ def handle_stop(mqtt_sender):
     Tells the robot to stop.
       :type  mqtt_sender:  com.MqttClient
     """
-    mqtt_sender.send_message('stop')
+    mqtt_sender.send_message('forward', [0, 0])
 
 
 ###############################################################################
