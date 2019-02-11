@@ -16,7 +16,9 @@ class DelegateThatReceives(object):
         self.robot.drive_system.go(int(leftSpeed), int(rightSpeed))
 
     def raise_arm(self):
+        print('start')
         self.robot.arm_and_claw.raise_arm()
+        print('end')
 
     def lower_arm(self):
         print('start')

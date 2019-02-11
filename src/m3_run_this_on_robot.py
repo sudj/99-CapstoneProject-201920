@@ -39,6 +39,7 @@ def real_thing():
 
 def runTestArm():
     robot = rosebot.RoseBot()
+    print('1')
     robot.arm_and_claw.raise_arm()
     print('2')
     robot.arm_and_claw.calibrate_arm()
