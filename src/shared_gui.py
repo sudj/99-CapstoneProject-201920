@@ -203,15 +203,19 @@ def beep_frame(window, mqtt_sender):
     frame_label = ttk.Label(frame, text='Beep System')
     beep_number_label = ttk.Label(frame, text='Number of beeps:')
     beep_number_entry = ttk.Entry(frame, width=8)
+    beep_number_entry.insert(0, "1")
     beep_button = ttk.Button(frame, text='Beep')
     tone_duration_label = ttk.Label(frame, text='Duration of Tone:')
     tone_duration_entry = ttk.Entry(frame, width=8)
+    tone_duration_entry.insert(0, "0")
     tone_frequency_label = ttk.Label(frame, text='Frequency of tone:')
     tone_frequency_entry = ttk.Entry(frame, width=8)
+    tone_frequency_entry.insert(0, '400')
     tone_button = ttk.Button(frame, text='Tone')
-    phrase_entry = ttk.Entry(frame, width=8)
+    phrase_entry = ttk.Entry(frame, width=20)
     phrase_label = ttk.Label(frame, text='Enter the phrase here:')
     phrase_buttton = ttk.Button(frame, text='Speak the phrase')
+
 
     # Grid the widgets:
     frame_label.grid(row=0, column=1)
@@ -357,7 +361,8 @@ def handle_exit(mqtt_sender):
     Then exit this program.
       :type mqtt_sender: com.MqttClient
     """
-    mqtt_sender.send_message('exit')
+    handle_quit(mqtt_sender)
+    exit()
 
 
 ###############################################################################
