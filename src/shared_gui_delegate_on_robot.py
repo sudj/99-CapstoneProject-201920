@@ -11,6 +11,7 @@ class DelegateThatReceives(object):
     def __init__(self, robot):
         """:type robot: rosebot.RoseBot"""
         self.robot = robot
+        self.quit = False
 
     def forward(self, leftSpeed, rightSpeed):
         self.robot.drive_system.go(int(leftSpeed), int(rightSpeed))
@@ -43,11 +44,17 @@ class DelegateThatReceives(object):
 
     def beep(self, times):
         print('I will beep', times, 'times')
+        for k in range(times):
+            self.robot.sound_system.beeper.beep().wait()
 
 
-    def tone(self, times, frequency, duration):
-        print('I will play a tone at Frequency', frequency, 'for duration',duration)
+    def tone(self, duration, frequency):
+        print('I will play a tone at Frequency', frequency, 'for duration', duration)
+        self.robot.sound_system.tone_maker.play_tone(frequency, duration)
 
     def phrase(self, phrase):
         print('I will speak the phrase', phrase)
+
+    def quit(self):
+        self.quit = True
 
