@@ -41,8 +41,10 @@ class DelegateThatReceives(object):
         self.robot.drive_system.go_straight_for_inches_using_time(inches, speed)
         print('end')
 
-    def beep(self, times, frequency, duration):
+    def beep(self, times):
         print('I will beep', times, 'times')
+
+    def tone(self, frequency, duration):
         print('I will play a tone at frequency', frequency, 'for duration', duration)
 
     def phrase(self, phrase):
