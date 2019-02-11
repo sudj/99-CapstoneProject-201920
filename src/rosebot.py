@@ -265,6 +265,7 @@ class ArmAndClaw(object):
         self.touch_sensor = touch_sensor
         self.motor = Motor('A', motor_type='medium')
 
+
     def raise_arm(self):
         """ Raises the Arm until its touch sensor is pressed. """
         self.motor.turn_on(100)
@@ -305,6 +306,7 @@ class ArmAndClaw(object):
             if self.motor.get_position() >= desired_arm_position:
                 self.motor.turn_off()
                 break
+
 
     def lower_arm(self):
 
