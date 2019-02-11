@@ -153,7 +153,7 @@ def get_drive_system_frame(window, mqtt_sender):
 
     frame_label = ttk.Label(frame, text='Drive System')
     left_speed_label = ttk.Label(frame, text='Left speed:')
-    right_speed_label = ttk.Label(frame,text='Right speed:')
+    right_speed_label = ttk.Label(frame, text='Right speed:')
     left_speed_entry = ttk.Entry(frame, width=8)
     left_speed_entry.insert(0, "100")
     right_speed_entry = ttk.Entry(frame, width=8)
@@ -186,8 +186,10 @@ def get_drive_system_frame(window, mqtt_sender):
     go_button["command"] = lambda: go(mqtt_sender, left_speed_entry, right_speed_entry)
     stop_button["command"] = lambda: stop(mqtt_sender)
     seconds_button["command"] = lambda: go_seconds(mqtt_sender, left_speed_entry, right_speed_entry, seconds_entry)
-    inches_using_time["command"] = lambda: go_inches_time(mqtt_sender, left_speed_entry, right_speed_entry, inches_entry)
-    inches_using_encoder["command"] = lambda: go_inches_encoder(mqtt_sender, left_speed_entry, right_speed_entry, inches_entry)
+    inches_using_time["command"] = lambda: go_inches_time(mqtt_sender, left_speed_entry, right_speed_entry,
+                                                          inches_entry)
+    inches_using_encoder["command"] = lambda: go_inches_encoder(mqtt_sender, left_speed_entry, right_speed_entry,
+                                                                inches_entry)
 
     return frame
 
@@ -198,7 +200,8 @@ def beep_frame(window, mqtt_sender):
 
     frame_label = ttk.Label(frame, text='Beep System')
 
-    frame_label.grid(row=0 , column=0)
+    frame_label.grid(row=0, column=0)
+
 
 ###############################################################################
 ###############################################################################
@@ -220,7 +223,7 @@ def handle_forward(left_entry_box, right_entry_box, mqtt_sender):
     """
 
     s = [int(left_entry_box.get()), int(right_entry_box.get())]
-    mqtt_sender.send_message('forward',s)
+    mqtt_sender.send_message('forward', s)
 
 
 def handle_backward(left_entry_box, right_entry_box, mqtt_sender):
@@ -231,8 +234,8 @@ def handle_backward(left_entry_box, right_entry_box, mqtt_sender):
       :type  right_entry_box:  ttk.Entry
       :type  mqtt_sender:      com.MqttClient
     """
-    s = [-int(left_entry_box.get()),-int(right_entry_box.get()) ]
-    mqtt_sender.send_message('forward',s)
+    s = [-int(left_entry_box.get()), -int(right_entry_box.get())]
+    mqtt_sender.send_message('forward', s)
 
 
 def handle_left(left_entry_box, right_entry_box, mqtt_sender):
@@ -351,7 +354,6 @@ def go_inches_time(mqtt_sender, left_speed_entry, right_speed_entry, inches_entr
 
 def go_inches_encoder(mqtt_sender, left_speed_entry, right_speed_entry, inches_entry):
     mqtt_sender.send_message('go_inches_encoder', [int(left_speed_entry.get()), int(inches_entry.get())])
-
 
 ###############################################################################
 # Handlers for Buttons in the Beep frame.
