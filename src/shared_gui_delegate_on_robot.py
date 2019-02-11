@@ -31,12 +31,12 @@ class DelegateThatReceives(object):
     def go_seconds(self, speed, seconds):
         self.robot.drive_system.go_straight_for_seconds(seconds, speed)
 
-    def go_inches_encoder(self, inches, speed):
+    def go_inches_encoder(self, speed, inches):
         print('start')
         self.robot.drive_system.go_straight_for_inches_using_time(inches, speed)
         print('end')
 
-    def go_inches_time(self, inches, speed):
+    def go_inches_time(self, speed, inches):
         print('start')
         self.robot.drive_system.go_straight_for_inches_using_encoder(inches, speed)
         print('end')
