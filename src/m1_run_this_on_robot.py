@@ -29,8 +29,11 @@ def real_thing(robot):
     mqtt_receiver = com.MqttClient(delagate_receiver)
     mqtt_receiver.connect_to_pc()
 
+
     while True:
         time.sleep(0.01)
+        if delagate_receiver.quit:
+            break
 
 def test_drive(robot):
     robot.drive_system.go(100, -100)
