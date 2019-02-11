@@ -102,7 +102,8 @@ class DriveSystem(object):
         conversion factor of 10.0 inches per second at 100 (full) speed.
         """
         seconds_per_inch_at_100 = 10.0
-        seconds = abs(inches * seconds_per_inch_at_100 / speed)
+        # seconds = abs(inches / seconds_per_inch_at_100)
+        seconds = 3
         self.go_straight_for_seconds(seconds, speed)
 
     def go_straight_for_inches_using_encoder(self, inches, speed):
