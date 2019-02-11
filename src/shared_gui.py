@@ -216,7 +216,6 @@ def beep_frame(window, mqtt_sender):
     phrase_label = ttk.Label(frame, text='Enter the phrase here:')
     phrase_buttton = ttk.Button(frame, text='Speak the phrase')
 
-
     # Grid the widgets:
     frame_label.grid(row=0, column=1)
     beep_number_label.grid(row=1, column=0)
@@ -341,7 +340,7 @@ def handle_move_arm_to_position(arm_position_entry, mqtt_sender):
       :type  arm_position_entry  ttk.Entry
       :type  mqtt_sender:        com.MqttClient
     """
-    mqtt_sender.send_message('move_arm',[int(arm_position_entry.get())])
+    mqtt_sender.send_message('move_arm', [int(arm_position_entry.get())])
 
 
 ###############################################################################
@@ -392,6 +391,7 @@ def go_inches_time(mqtt_sender, left_speed_entry, right_speed_entry, inches_entr
 
 def go_inches_encoder(mqtt_sender, left_speed_entry, right_speed_entry, inches_entry):
     mqtt_sender.send_message('go_inches_encoder', [int(left_speed_entry.get()), int(inches_entry.get())])
+
 
 ###############################################################################
 # Handlers for Buttons in the Beep frame.
