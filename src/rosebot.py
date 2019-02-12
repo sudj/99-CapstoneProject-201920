@@ -152,7 +152,7 @@ class DriveSystem(object):
         """
         self.go(speed, speed)
         while True:
-            if self.sensor_system.color_sensor < intensity:
+            if self.sensor_system.color_sensor.get_ambient_light_intensity() < intensity:
                 self.stop()
                 break
 
@@ -166,7 +166,7 @@ class DriveSystem(object):
         """
         self.go(speed, speed)
         while True:
-            if self.sensor_system.color_sensor > intensity:
+            if self.sensor_system.color_sensor.get_ambient_light_intensity() > intensity:
                 self.stop()
                 break
 
@@ -183,11 +183,19 @@ class DriveSystem(object):
         then use the   get_color_as_name   method to access
         the color sensor's color.
         """
-        self.go(speed, speed)
-        while True:
-            if self.sensor_system.color_sensor == color:
-                self.stop()
-                break
+        if type(color) is int:
+            self.go(speed, speed)
+            while True:
+                if self.sensor_system.color_sensor.get_color() == color:
+                    self.stop()
+                    break
+        if type(color) is str:
+            self.go(speed, speed)
+            while True:
+                if self.sensor_system.color_sensor.get_color_as_name() == color:
+                    self.stop()
+                    break
+
 
     def go_straight_until_color_is_not(self, color, speed):
         """
@@ -199,7 +207,7 @@ class DriveSystem(object):
         """
         self.go(speed, speed)
         while True:
-            if self.sensor_system.color_sensor != color:
+            if self.sensor_system.color_sensor.get_color() != color:
                 self.stop()
                 break
 
@@ -620,6 +628,7 @@ class ColorSensor(object):
         Example usage:
             red, green, blue = color_sensor.get_raw_color
         """
+
 
 
 ###############################################################################
