@@ -64,3 +64,15 @@ class DelegateThatReceives(object):
         if self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() < distance:
             self.robot.drive_system.go_straight_for_seconds(0, 0)
 
+    def color_is(self, color, speed):
+        self.robot.drive_system.go_straight_until_color_is(color, speed)
+
+    def color_is_not(self, color, speed):
+        self.robot.drive_system.go_straight_until_color_is_not(color, speed)
+
+    def greater_intensity(self, intensity, speed):
+        self.robot.drive_system.go_straight_until_intensity_is_greater_than(intensity, speed)
+
+    def less_intensity(self, intensity, speed):
+        self.robot.drive_system.go_straight_until_intensity_is_less_than(intensity, speed)
+
