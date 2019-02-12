@@ -57,3 +57,4 @@ class DelegateThatReceives(object):
 
     def is_quit(self):
         self.quit = True
+

@@ -250,7 +250,7 @@ def ir_frame(window, mqtt_sender):
     IR_entry.grid(row=1, column=1)
     IR_label.grid(row=1, column=0)
 
-    IR_mode_button["command"] = lambda: handle_ir_frame(mqtt_sender, IR_entry)
+    IR_mode_button["command"] = lambda: handle_send_ir_sensor(mqtt_sender, IR_entry)
 
 
     return frame
