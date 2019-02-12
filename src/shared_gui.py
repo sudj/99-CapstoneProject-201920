@@ -236,6 +236,28 @@ def beep_frame(window, mqtt_sender):
 
     return frame
 
+def ir_frame(window, mqtt_sender):
+    frame = ttk.Frame(window, padding=10, borderwidth=5, relief="ridge")
+    frame.grid()
+
+    frame_label = ttk.Label(frame, text='Beep System')
+    IR_mode_button = ttk.Button(frame, text='IR Mode')
+    IR_entry = ttk.Entry(frame, width=20)
+    IR_label = ttk.Label(frame, text='Distance to stop before object:')
+
+    frame_label.grid(row=0, column=0)
+    IR_mode_button.grid(row=2, column=0)
+    IR_entry.grid(row=1, column=1)
+    IR_label.grid(row=1, column=0)
+
+    IR_mode_button["command"] = lambda: handle_ir_frame(mqtt_sender, IR_entry)
+
+
+    return frame
+
+
+
+
 
 ###############################################################################
 ###############################################################################
@@ -414,3 +436,10 @@ def tone(mqtt_sender, duration_entry, frequency_entry):
 
 def phrase(mqtt_sender, phrase_entry):
     mqtt_sender.send_message('phrase', [str(phrase_entry.get())])
+
+###############################################################################
+# Handlers for Buttons in the IR frame.
+###############################################################################
+
+def handle_send_ir_sensor(mqtt_sender,IR_entry):
+    mqtt_sender.send_message('ir_sensor', [int(IR_entry.get)])
