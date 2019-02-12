@@ -256,7 +256,17 @@ def ir_frame(window, mqtt_sender):
     return frame
 
 
+def camera_frame(window, mqtt_sender):
+    frame = ttk.Frame(window, padding=10, borderwidth=5, relief="ridge")
+    frame.grid()
 
+    button = ttk.Button(frame, text='press')
+
+    button.grid(row=0, column=0)
+
+    button['command'] = lambda: camera(mqtt_sender)
+
+    return frame
 
 
 ###############################################################################
@@ -443,3 +453,8 @@ def phrase(mqtt_sender, phrase_entry):
 
 def handle_send_ir_sensor(mqtt_sender,IR_entry):
     mqtt_sender.send_message('ir_sensor', [int(IR_entry.get)])
+
+
+
+def camera(mqtt_sender):
+    mqtt_sender.send_message('camera')

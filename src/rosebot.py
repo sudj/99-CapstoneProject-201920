@@ -37,6 +37,7 @@ class RoseBot(object):
         self.arm_and_claw = ArmAndClaw(self.sensor_system.touch_sensor)
         self.beacon_system = BeaconSystem()
         self.display_system = DisplaySystem()
+        self.camera = Camera()
 
 ###############################################################################
 #    DriveSystem
@@ -68,6 +69,7 @@ class DriveSystem(object):
         self.sensor_system = sensor_system
         self.left_motor = Motor('B')
         self.right_motor = Motor('C')
+        self.camera = Camera()
 
         self.wheel_circumference = 1.3 * math.pi
 
@@ -155,8 +157,6 @@ class DriveSystem(object):
             if self.sensor_system.color_sensor.get_ambient_light_intensity() < intensity:
                 self.stop()
                 break
-
-
 
 
     def go_straight_until_intensity_is_greater_than(self, intensity, speed):
@@ -310,6 +310,9 @@ class DriveSystem(object):
         Displays on the GUI the Blob data of the Blob that the camera sees
         (if any).
         """
+        pixy = self.camera.get_biggest_blob()
+        print(pixy)
+
 
     def spin_clockwise_until_sees_object(self, speed, area):
         """

@@ -58,9 +58,8 @@ class DelegateThatReceives(object):
     def is_quit(self):
         self.quit = True
 
-
     def ir_sensor(self,distance):
-        print(self.robot.sensor_system.ir_proximity_sensor.get_distance())
+        print(self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches())
         if self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() < distance:
             self.robot.drive_system.go_straight_for_seconds(0, 0)
 
@@ -76,3 +75,7 @@ class DelegateThatReceives(object):
     def less_intensity(self, intensity, speed):
         self.robot.drive_system.go_straight_until_intensity_is_less_than(intensity, speed)
 
+
+
+    def camera(self):
+        print(self.robot.camera.get_biggest_blob())
