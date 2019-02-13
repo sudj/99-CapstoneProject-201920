@@ -7,6 +7,7 @@
   Winter term, 2018-2019.
 """
 import m1_run_this_on_robot
+import m3_run_this_on_robot
 
 class DelegateThatReceives(object):
     def __init__(self, robot):
@@ -88,3 +89,6 @@ class DelegateThatReceives(object):
 
     def camera_counter_clockwise(self, speed, area):
         self.robot.drive_system.spin_counterclockwise_until_sees_object(speed, area)
+
+    def led_system(self, rate, initial):
+        m3_run_this_on_robot.led()
