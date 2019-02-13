@@ -236,57 +236,7 @@ def beep_frame(window, mqtt_sender):
 
     return frame
 
-def ir_frame(window, mqtt_sender):
-    frame = ttk.Frame(window, padding=10, borderwidth=5, relief="ridge")
-    frame.grid()
 
-    frame_label = ttk.Label(frame, text='Beep System')
-    IR_mode_button = ttk.Button(frame, text='IR Mode')
-    IR_entry = ttk.Entry(frame, width=20)
-    IR_label = ttk.Label(frame, text='Distance to stop before object:')
-
-    frame_label.grid(row=0, column=0)
-    IR_mode_button.grid(row=2, column=0)
-    IR_entry.grid(row=1, column=1)
-    IR_label.grid(row=1, column=0)
-
-    IR_mode_button["command"] = lambda: handle_send_ir_sensor(mqtt_sender, IR_entry)
-
-
-    return frame
-
-
-def camera_frame(window, mqtt_sender):
-    frame = ttk.Frame(window, padding=10, borderwidth=5, relief="ridge")
-    frame.grid()
-
-    title_label = ttk.Label(frame, text='Camera System')
-    info_button = ttk.Button(frame, text='Get camera info')
-    speed_label = ttk.Label(frame, text='Speed: ')
-    speed_entry = ttk.Entry(frame, width = 8)
-    speed_entry.insert(0, '50')
-    area_label = ttk.Label(frame, text='Area: ')
-    area_entry = ttk.Entry(frame, width=8)
-    area_entry.insert(0, '500')
-    spin_label = ttk.Label(frame, text="Find object spinning")
-    clockwise_button = ttk.Button(frame, text='Clockwise')
-    counterclockwise_button = ttk.Button(frame, text='Counter clockwise')
-
-    title_label.grid(row=0, column=1)
-    info_button.grid(row=1, column=1)
-    speed_label.grid(row=2, column=0)
-    speed_entry.grid(row=2, column=1)
-    area_label.grid(row=3, column=0)
-    area_entry.grid(row=3, column=1)
-    spin_label.grid(row=4, column=0)
-    clockwise_button.grid(row=4, column=1)
-    counterclockwise_button.grid(row=4, column=2)
-
-    info_button['command'] = lambda: camera(mqtt_sender)
-    clockwise_button['command'] = lambda: clockwise(mqtt_sender, speed_entry, area_entry)
-    counterclockwise_button['command'] = lambda: counter_clockwise(mqtt_sender, speed_entry, area_entry)
-
-    return frame
 
 
 ###############################################################################
@@ -472,19 +422,4 @@ def phrase(mqtt_sender, phrase_entry):
 ###############################################################################
 
 def handle_send_ir_sensor(mqtt_sender,IR_entry):
-    mqtt_sender.send_message('ir_sensor', [int(IR_entry.get())])
-    mqtt_sender.send_message('ir_sensor', [int(IR_entry.get)])
-
-
-###############################################################################
-# Handlers for Buttons in the Camera frame.
-###############################################################################
-
-def camera(mqtt_sender):
-    mqtt_sender.send_message('camera')
-
-def clockwise(mqtt_sender, speed, area):
-    mqtt_sender.send_message('camera_clockwise', [int(speed.get()), int(area.get())])
-
-def counter_clockwise(mqtt_sender, speed, area):
-    mqtt_sender.send_message('camera_counter_clockwise', [int(speed.get()), int(area.get())])
+    mqtt_sender.send_message('ir_test',[IR_entry.get()])
