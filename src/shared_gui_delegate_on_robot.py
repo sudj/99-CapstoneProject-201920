@@ -6,10 +6,12 @@
     and Christina Rogers, Jason Ims, Dan Su.
   Winter term, 2018-2019.
 """
+import m1_run_this_on_robot
 
 class DelegateThatReceives(object):
     def __init__(self, robot):
         """:type robot: rosebot.RoseBot"""
+        self.grab = m1_run_this_on_robot.Grab(robot)
         self.robot = robot
         self.quit = False
 
@@ -76,4 +78,8 @@ class DelegateThatReceives(object):
 
     def less_intensity(self, intensity, speed):
         self.robot.drive_system.go_straight_until_intensity_is_less_than(intensity, speed)
+
+    def m1_beep_grab(self):
+        self.grab.beep_grab()
+
 
