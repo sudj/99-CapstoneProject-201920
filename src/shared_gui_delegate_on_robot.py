@@ -80,3 +80,13 @@ class DelegateThatReceives(object):
     def less_intensity(self, intensity, speed):
         self.robot.drive_system.go_straight_until_intensity_is_less_than(intensity, speed)
 
+    def pick_up_with_prox(self):
+        while True:
+            self.robot.drive_system.go(50, 50)
+            print(self.robot.sensor_system.ir_proximity_sensor.get_distance())
+            if self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() < 1.9:
+                self.robot.drive_system.go_straight_for_seconds(0, 0)
+                self.robot.arm_and_claw.raise_arm()
+                break
+
+

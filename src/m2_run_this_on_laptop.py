@@ -86,17 +86,29 @@ def ir_frame(window, mqtt_sender):
     IR_mode_button = ttk.Button(frame, text='IR Mode')
     IR_entry = ttk.Entry(frame, width=20)
     IR_label = ttk.Label(frame, text='Distance to stop before object:')
+    IR_grab = ttk.Button(frame, text='Use proximity to grab object')
 
-    # IR_mode_button['command'] = lambda: handle_send_ir_sensor(mqtt_sender,IR_entry)
+    IR_mode_button['command'] = lambda: handle_send_ir_sensor(mqtt_sender,IR_entry)
+    IR_grab['command'] = lambda: handle_send_grab(mqtt_sender)
 
     frame_label.grid(row=0, column=0)
     IR_mode_button.grid(row=2, column=0)
     IR_entry.grid(row=1, column=1)
     IR_label.grid(row=1, column=0)
-
+    IR_grab.grid(row=4, column=0)
 
 
     return frame
+
+
+def handle_send_ir_sensor(mqtt_sender,IR_entry):
+    mqtt_sender.send_message('ir_test',[IR_entry.get()])
+
+def handle_send_grab(mqtt_sender):
+    mqtt_sender.send_message('pick_up_with_prox')
+
+
+
 
 # -----------------------------------------------------------------------------
 # Calls  main  to start the ball rolling.
