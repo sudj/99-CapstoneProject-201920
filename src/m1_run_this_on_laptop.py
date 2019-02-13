@@ -41,7 +41,7 @@ def main():
     # -------------------------------------------------------------------------
     # Sub-frames for the shared GUI that the team developed:
     # -------------------------------------------------------------------------
-    teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame = get_shared_frames(main_frame, mqtt_sender)
+    teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, color_frame, grab_frame = get_shared_frames(main_frame, mqtt_sender)
 
 
 
@@ -53,7 +53,7 @@ def main():
     # -------------------------------------------------------------------------
     # Grid the frames.
     # -------------------------------------------------------------------------
-    grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame,camera_frame)
+    grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame,color_frame, grab_frame)
 
 
     # -------------------------------------------------------------------------
@@ -67,24 +67,27 @@ def get_shared_frames(main_frame, mqtt_sender):
     control_frame = shared_gui.get_control_frame(main_frame, mqtt_sender)
     drive_system_frame = shared_gui.get_drive_system_frame(main_frame, mqtt_sender)
     beep_frame = shared_gui.beep_frame(main_frame, mqtt_sender)
-    camera_frame = camera_test(main_frame, mqtt_sender)
+    color_frame = color_test(main_frame, mqtt_sender)
+    grab_frame = beep_finder(main_frame, mqtt_sender)
 
-    return teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame,camera_frame
+    return teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, color_frame, grab_frame
 
 
-def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame,camera_frame):
+def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame,beep_frame, color_frame, grab_frame):
     teleop_frame.grid(row=0, column=0)
     arm_frame.grid(row=1, column=0)
     control_frame.grid(row=2, column=0)
     drive_system_frame.grid(row=0, column=1)
     beep_frame.grid(row=1, column=1)
-    camera_frame.grid(row=2, column=1)
+    color_frame.grid(row=2, column=1)
+    grab_frame.grid(row=3, column=0)
 
-def camera_test(window, mqtt_sender):
+
+def color_test(window, mqtt_sender):
     """ :type  window:       ttk.Frame | ttk.Toplevel
       :type  mqtt_sender:  com.MqttClient"""
 
-    frame = ttk.Frame(window, padding=10, borderwidth=5, relief="ridge")
+    frame = ttk.Frame(window, padding=10, borderwidth=10, relief="ridge")
     frame.grid()
 
     # Construct the widgets on the frame:
@@ -94,36 +97,30 @@ def camera_test(window, mqtt_sender):
     color_label = ttk.Label(frame, text='color(either int or str)')
 
     speed_entry = ttk.Entry(frame, width=8)
-    speed_entry.insert(0, "100")
+    speed_entry.insert(0, "0")
     intensity_entry = ttk.Entry(frame, width=8)
-    intensity_entry.insert(0, "100")
+    intensity_entry.insert(0, "0")
     color_entry = ttk.Entry(frame, width=8)
-    color_entry.insert(0,'100')
+    color_entry.insert(0,'0')
 
     straight_less_intensity_button = ttk.Button(frame, text="Until Intensity is less than")
     straight_geater_intensity_button = ttk.Button(frame, text="Until Intensity is greater than")
-    straight_color_is_button = ttk.Button(frame, text='Until Color is')
+    straight_color_is_button = ttk.Button(frame, text='Until color is')
     straight_color_is_not_button = ttk.Button(frame, text='Until color is not')
-    less_button = ttk.Button(frame, text="Less Than")
-    greater_button = ttk.Button(frame, text="Greater Than")
-    color_is_button = ttk.Button(frame, text="Color is")
-    color_is_not_button = ttk.Button(frame, text='Color is not')
 
     # Grid the widgets:
     frame_label.grid(row=0, column=1)
-    speed_label.grid(row=1, column=0)
-    intensity_label.grid(row=1, column=1)
-    color_label.grid(row=1, column=2)
+    speed_entry.grid(row=1, column=0)
+    intensity_entry.grid(row=1, column=1)
+    color_entry.grid(row=1, column=2)
+    speed_label.grid(row=2, column=0)
+    intensity_label.grid(row=2, column=1)
+    color_label.grid(row=2, column=2)
 
-    straight_less_intensity_button.grid(row=2, column=0)
-    straight_geater_intensity_button.grid(row=2, column=2)
+    straight_less_intensity_button.grid(row=3, column=0)
+    straight_geater_intensity_button.grid(row=3, column=2)
     straight_color_is_button.grid(row=4, column=0)
     straight_color_is_not_button.grid(row=4, column=2)
-    less_button.grid(row=3, column=0)
-    greater_button.grid(row=3, column=2)
-    color_is_button.grid(row=5, column=0)
-    color_is_not_button.grid(row=5, column=2)
-
 
     # Set the button callbacks:
     straight_color_is_button["command"] = lambda: handle_color_is(
@@ -137,6 +134,26 @@ def camera_test(window, mqtt_sender):
 
     return frame
 
+def beep_finder(window, mqtt_sender):
+    frame = ttk.Frame(window, padding=10, borderwidth=10, relief="ridge")
+    frame.grid()
+
+    frame_label = ttk.Label(frame, text="Beeping Finder")
+    beep_label = ttk.Label(frame, text='Beeper')
+
+    beep_button = ttk.Button(frame, text="Grab while Beeping")
+
+    frame_label.grid(row=0, column=0)
+    beep_label.grid(row=1, column=0)
+    beep_button.grid(row=2, column=0)
+
+    beep_button['command'] = lambda: handle_beep_grab(mqtt_sender)
+
+    return frame
+
+
+
+
 def handle_color_is(color_entry, speed_entry, mqtt_sender):
     s = [color_entry.get(), speed_entry.get()]
     mqtt_sender.send_message('color_is', s)
@@ -149,9 +166,14 @@ def handle_greater_intensity(intensity_entry, speed_entry, mqtt_sender):
     s = [intensity_entry.get(), speed_entry.get()]
     mqtt_sender.send_message('greater_intensity', s)
 
-def handle_less_instensity(intensity_entry, speed_entry, mqtt_sender):
+def handle_less_intensity(intensity_entry, speed_entry, mqtt_sender):
     s = [intensity_entry.get(), speed_entry.get()]
     mqtt_sender.send_message('less_intensity', s)
+
+def handle_beep_grab(mqtt_sender):
+    mqtt_sender.send_message('m1_beep_grab')
+
+
 # -----------------------------------------------------------------------------
 # Calls  main  to start the ball rolling.
 # -----------------------------------------------------------------------------

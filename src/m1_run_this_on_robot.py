@@ -17,7 +17,7 @@ def main():
       2. Communicates via MQTT with the GUI code that runs on the LAPTOP.
     """
     robot = rosebot.RoseBot()
-    test_drive(robot)
+    # test_drive(robot)
     real_thing(robot)
 
 
@@ -52,6 +52,22 @@ def test_drive(robot):
     robot.drive_system.go_straight_for_inches_using_encoder(10, 100)
     print('go straight for inches using encoder finished')
 
+class Grab(object):
+    def __init__(self, robot):
+        """:type robot: rosebot.RoseBot"""
+        self.robot = robot
+
+    def beep_grab(self):
+        starting_distance = self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()
+        self.robot.drive_system.go(20, 20)
+        while True:
+            distance_away = starting_distance - self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()
+            if distance_away < 3:
+                self.robot.drive_system.stop()
+                break
+            self.robot.sound_system.beeper.beep()
+            time.sleep(distance_away // 10)
+        self.robot.arm_and_claw.move_arm_to_position(2000)
 
 
 
