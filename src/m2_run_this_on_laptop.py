@@ -114,7 +114,9 @@ def camera_frame(window,mqtt_sender):
     blank = ttk.Label(frame, text='')
     counter_button = ttk.Button(frame, text='Counter-Clockwise')
     clockwise_button = ttk.Button(frame, text='Clockwise')
+    Calibrate = ttk.Button(frame, text='Calibrate Camera')
 
+    Calibrate.grid(row=1, column=1)
     frame_label.grid(row=0, column=1)
     blank.grid(row=1, column=0)
     counter_button.grid(row=2, column=0)
@@ -122,6 +124,7 @@ def camera_frame(window,mqtt_sender):
 
     counter_button['command'] = lambda: handle_circle_counter(mqtt_sender)
     clockwise_button['command'] = lambda: handle_circle_clockwise(mqtt_sender)
+    # Calibrate['command'] = lambda: handle_calibrate_object(mqtt_sender)
 
     return frame
 
@@ -136,38 +139,6 @@ def handle_send_ir_sensor(mqtt_sender,IR_entry):
 
 def handle_send_grab(mqtt_sender,factor):
     mqtt_sender.send_message('pick_up_with_prox',[factor.get()])
-
-def pick_up_with_prox(self, factor):
-    print('Test')
-    while True:
-        self.robot.drive_system.go(50, 50)
-        if (self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 90:
-            self.robot.sound_system.tone_maker.play_tone(400, 10)
-        if (
-                self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 75 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 90:
-            self.robot.sound_system.tone_maker.play_tone(400 * factor, 10)
-        if (
-                self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 50 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 75:
-            self.robot.sound_system.tone_maker.play_tone(400 * 1.5 * factor, 10)
-        if (
-                self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 25 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 50:
-            self.robot.sound_system.tone_maker.play_tone(400 * 2 * factor, 10)
-        if (
-                self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 10 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 25:
-            self.robot.sound_system.tone_maker.play_tone(400 * 2.5 * factor, 10)
-        if (
-                self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 5 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 10:
-            self.robot.sound_system.tone_maker.play_tone(400 * 3 * factor, 10)
-        if (
-                self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 3 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 5:
-            self.robot.sound_system.tone_maker.play_tone(400 * 3.5 * factor, 10)
-        if (
-                self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 1 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 3:
-            self.robot.sound_system.tone_maker.play_tone(400 * 4 * factor, 10)
-        if self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() < 1.9:
-            self.robot.drive_system.go_straight_for_seconds(0, 0)
-            self.robot.arm_and_claw.raise_arm()
-            break
 
 def counter(self):
     self.robot.drive_system.spin_clockwise_until_sees_object(50,100)
