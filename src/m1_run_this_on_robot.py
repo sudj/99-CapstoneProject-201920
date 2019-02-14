@@ -32,7 +32,7 @@ def real_thing(robot):
 
     while True:
         time.sleep(0.01)
-        if delagate_receiver.is_quit:
+        if delagate_receiver.is_quit():
             break
 
 def test_drive(robot):
@@ -59,7 +59,7 @@ class Grab(object):
 
     def beep_grab(self):
         starting_distance = self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()
-        self.robot.drive_system.go(20, 20)
+        self.robot.drive_system.go(50, 50)
         while True:
             distance_away = starting_distance - self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()
             if distance_away < 3:

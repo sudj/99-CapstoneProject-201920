@@ -12,21 +12,41 @@ import shared_gui_delegate_on_robot
 
 
 def main():
-    run_robot()
     """
     This code, which must run on the EV3 ROBOT:
       1. Makes the EV3 robot to various things.
       2. Communicates via MQTT with the GUI code that runs on the LAPTOP.
     """
 
-def run_robot():
+    # print('start')
+    # runTestArm()
+
+    real_thing()
+
+
+def real_thing():
     robot = rosebot.RoseBot()
-    delegate = shared_gui_delegate_on_robot.DelegateThatRecieves(robot)
-    mqtt_receiver = com.MqttClient(delegate)
+    delegate_that_receives = shared_gui_delegate_on_robot.DelegateThatReceives(robot)
+    mqtt_receiver = com.MqttClient(delegate_that_receives)
     mqtt_receiver.connect_to_pc()
 
     while True:
-        time.sleep(.01)
+        time.sleep(0.01)
+        if delegate_that_receives.quit:
+            break
+
+
+def runTestArm():
+    robot = rosebot.RoseBot()
+    print('1')
+    robot.arm_and_claw.raise_arm()
+    print('2')
+    robot.arm_and_claw.calibrate_arm()
+    print ('3')
+    robot.arm_and_claw.move_arm_to_position(2500)
+    print('4')
+    robot.arm_and_claw.lower_arm()
+    print('finish')
 
 
 # -----------------------------------------------------------------------------
