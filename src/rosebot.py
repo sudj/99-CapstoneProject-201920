@@ -154,7 +154,7 @@ class DriveSystem(object):
         """
         self.go(speed, speed)
         while True:
-            if self.sensor_system.color_sensor.get_ambient_light_intensity() < intensity:
+            if self.sensor_system.color_sensor.get_ambient_light_intensity() < int(intensity):
                 self.stop()
                 break
 
@@ -166,7 +166,7 @@ class DriveSystem(object):
         """
         self.go(speed, speed)
         while True:
-            if self.sensor_system.color_sensor.get_ambient_light_intensity() > intensity:
+            if self.sensor_system.color_sensor.get_ambient_light_intensity() > int(intensity):
                 self.stop()
                 break
 

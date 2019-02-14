@@ -6,12 +6,12 @@
     and Christina Rogers, Jason Ims, Dan Su.
   Winter term, 2018-2019.
 """
-import m1_run_this_on_robot
+import m1_extra
 
 class DelegateThatReceives(object):
     def __init__(self, robot):
         """:type robot: rosebot.RoseBot"""
-        self.grab = m1_run_this_on_robot.Grab.beep_grab(robot)
+        self.grab = m1_extra.Grab(robot)
         self.robot = robot
         self.quit = False
 
@@ -71,19 +71,19 @@ class DelegateThatReceives(object):
         self.robot.drive_system.go_straight_for_seconds(0, 0)
 
     def color_is(self, color, speed):
-        print('start')
+        print(color, speed)
         self.robot.drive_system.go_straight_until_color_is(color, speed)
 
     def color_is_not(self, color, speed):
-        print('start')
+        print(color, speed)
         self.robot.drive_system.go_straight_until_color_is_not(color, speed)
 
     def greater_intensity(self, intensity, speed):
-        print('start')
+        print(intensity, speed)
         self.robot.drive_system.go_straight_until_intensity_is_greater_than(intensity, speed)
 
     def less_intensity(self, intensity, speed):
-        print('start')
+        print(intensity, speed)
         self.robot.drive_system.go_straight_until_intensity_is_less_than(intensity, speed)
 
     def pick_up_with_prox(self):
@@ -94,5 +94,7 @@ class DelegateThatReceives(object):
                 self.robot.drive_system.go_straight_for_seconds(0, 0)
                 self.robot.arm_and_claw.raise_arm()
                 break
+    def m1_beep_grab(self):
+        self.grab.beep_grab()
 
 
