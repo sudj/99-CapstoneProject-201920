@@ -41,7 +41,7 @@ def main():
     # -------------------------------------------------------------------------
     # Sub-frames for the shared GUI that the team developed:
     # -------------------------------------------------------------------------
-    teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame = get_shared_frames(main_frame, mqtt_sender)
+    teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame, led_frame = get_shared_frames(main_frame, mqtt_sender)
 
     # -------------------------------------------------------------------------
     # Frames that are particular to my individual contributions to the project.
@@ -51,7 +51,7 @@ def main():
     # -------------------------------------------------------------------------
     # Grid the frames.
     # -------------------------------------------------------------------------
-    grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame)
+    grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame, led_frame)
 
     # -------------------------------------------------------------------------
     # The event loop:
@@ -66,52 +66,19 @@ def get_shared_frames(main_frame, mqtt_sender):
     drive_system_frame = shared_gui.get_drive_system_frame(main_frame, mqtt_sender)
     beep_frame = shared_gui.beep_frame(main_frame,mqtt_sender)
     camera_frame = shared_gui.camera_frame(main_frame, mqtt_sender)
+    led_frame = shared_gui.led_frame(main_frame, mqtt_sender)
 
-    return teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame
+    return teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame, led_frame
 
 
-def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame):
+def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame, led_frame):
     teleop_frame.grid(row=0, column=0)
     arm_frame.grid(row=1, column=0)
     control_frame.grid(row=2, column=0)
     drive_system_frame.grid(row=0, column=1)
     beep_frame.grid(row=1, column=1)
     camera_frame.grid(row=2, column=1)
-    # led_frame.grid(row=0, column=2)
-
-
-def led(rate_of_increase, initial, robot):
-    print (rate_of_increase, initial)
-    robot.drive_system.go(50, 50)
-    initial_distance = robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()
-    rate=initial
-    while True:
-        led_rotation(rate, robot)
-        distance_traveled = initial_distance - robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()
-        if distance_traveled > 1:
-            rate = rate - distance_traveled/initial_distance * rate_of_increase
-        if robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() <= 1:
-            robot.drive_system.stop()
-            robot.arm_and_claw.raise_arm()
-            break
-
-def led_rotation(rate, robot):
-    robot.led_system.left_led.turn_on()
-    time.sleep(rate)
-    robot.led_system.left_led.turn_off()
-    time.sleep(rate)
-    robot.led_system.right_led.turn_on()
-    time.sleep(rate)
-    robot.led_system.right_led.turn_off()
-    time.sleep(rate)
-    robot.led_system.left_led.turn_on()
-    time.sleep(rate)
-    robot.led_system.right_led.turn_on()
-    time.sleep(rate)
-    robot.led_system.left_led.turn_off()
-    time.sleep(rate)
-    robot.led_system.right_led.turn_off()
-    time.sleep(rate)
+    led_frame.grid(row=0, column=2)
 
 
 # -----------------------------------------------------------------------------
