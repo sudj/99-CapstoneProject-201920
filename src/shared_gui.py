@@ -237,7 +237,59 @@ def beep_frame(window, mqtt_sender):
     return frame
 
 
+def led_frame(window, mqtt_sender):
+    frame = ttk.Frame(window, padding=10, borderwidth=5, relief="ridge")
+    frame.grid()
 
+    title_label = ttk.Label(frame, text='LED system')
+    rate_label = ttk.Label(frame, text='Rate: ')
+    rate_entry = ttk.Entry(frame, width=8)
+    initial_label = ttk.Label(frame, text='Initial Speed: ')
+    initial_entry = ttk.Entry(frame, width=8)
+    button = ttk.Button(frame, text='go')
+
+    title_label.grid(row=0, column=0)
+    rate_label.grid(row=2, column=0)
+    rate_entry.grid(row=2, column=1)
+    initial_label.grid(row=1, column=0)
+    initial_entry.grid(row=1, column=1)
+    button.grid(row=3, column=1)
+
+    button['command'] = lambda: mqtt_sender.send_message('led_system', [int(rate_entry.get()), int(initial_entry.get())])
+
+    return frame
+
+
+def camera_frame(window, mqtt_sender):
+    frame = ttk.Frame(window, padding=10, borderwidth=5, relief="ridge")
+    frame.grid()
+
+    title = ttk.Label(frame, text='Camera system')
+    info_button = ttk.Button(frame, text='Get info')
+    speed_label = ttk.Label(frame, text='Speed: ')
+    speed_entry = ttk.Entry(frame, width=8)
+    area_label = ttk.Label(frame, text='Area: ')
+    area_entry = ttk.Entry(frame, width=8)
+    which = ttk.Label(frame, text='Direction:')
+    clock = ttk.Button(frame, text='Clockwise')
+    counter = ttk.Button(frame, text='Counter Clockwise')
+
+
+    title.grid(row=0, column=1)
+    info_button.grid(row=1, column=1)
+    speed_label.grid(row=2, column=0)
+    speed_entry.grid(row=2, column=1)
+    area_label.grid(row=3, column=0)
+    area_entry.grid(row=3, column=1)
+    which.grid(row=4, column=0)
+    clock.grid(row=4, column=1)
+    counter.grid(row=4, column=2)
+
+    info_button['command'] = lambda: mqtt_sender.send_message('camera')
+    clock['command'] = lambda : mqtt_sender.send_message('camera_clockwise', [int(speed_entry.get()), int(area_entry.get())])
+    counter['command'] = lambda : mqtt_sender.send_message('camera_counter_clockwise', [int(speed_entry.get()), int(area_entry.get())])
+
+    return frame
 
 ###############################################################################
 ###############################################################################

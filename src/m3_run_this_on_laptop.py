@@ -11,6 +11,7 @@ import mqtt_remote_method_calls as com
 import tkinter
 from tkinter import ttk
 import shared_gui
+import time
 
 
 def main():
@@ -50,7 +51,7 @@ def main():
     # -------------------------------------------------------------------------
     # Grid the frames.
     # -------------------------------------------------------------------------
-    grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame, led_frame(main_frame,mqtt_sender))
+    grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame)
 
     # -------------------------------------------------------------------------
     # The event loop:
@@ -69,39 +70,49 @@ def get_shared_frames(main_frame, mqtt_sender):
     return teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame
 
 
-def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame, led_frame):
+def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame):
     teleop_frame.grid(row=0, column=0)
     arm_frame.grid(row=1, column=0)
     control_frame.grid(row=2, column=0)
     drive_system_frame.grid(row=0, column=1)
     beep_frame.grid(row=1, column=1)
     camera_frame.grid(row=2, column=1)
-    led_frame.grid(row=0, column=2)
+    # led_frame.grid(row=0, column=2)
 
-def led_frame(window, mqtt_sender):
-    frame = ttk.Frame(window, padding=10, borderwidth=5, relief="ridge")
-    frame.grid()
 
-    title_label = ttk.Label(frame, text='LED system')
-    rate_label = ttk.Label(frame, text='Rate: ')
-    rate_entry = ttk.Entry(frame, width=8)
-    initial_label = ttk.Label(frame, text='Initial Speed: ')
-    initial_entry = ttk.Entry(frame, width=8)
-    button = ttk.Button(frame, text='go')
 
-    title_label.grid(row=0, column=0)
-    rate_label.grid(row=2, column=0)
-    rate_entry.grid(row=2, column=1)
-    initial_label.grid(row=1, column=0)
-    initial_entry.grid(row=1, column=1)
-    button.grid(row=3, column=1)
+def led(rate_of_increase, initial, robot):
+    print (rate_of_increase, initial)
+    robot.drive_system.go(50, 50)
+    initial_distance = robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()
+    rate=initial
+    while True:
+        led_rotation(rate, robot)
+        distance_traveled = initial_distance - robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()
+        if distance_traveled > 1:
+            rate = rate - distance_traveled/initial_distance * rate_of_increase
+        if robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() <= 1:
+            robot.drive_system.stop()
+            robot.arm_and_claw.raise_arm()
+            break
 
-    button['command'] = lambda: mqtt_sender.send_message('led_system', [int(rate_entry.get()), int(initial_entry.get())])
-
-    return frame
-
-def led(rate, initial):
-    print (rate, initial)
+def led_rotation(rate, robot):
+    robot.led_system.left_led.turn_on()
+    time.sleep(rate)
+    robot.led_system.left_led.turn_off()
+    time.sleep(rate)
+    robot.led_system.right_led.turn_on()
+    time.sleep(rate)
+    robot.led_system.right_led.turn_off()
+    time.sleep(rate)
+    robot.led_system.left_led.turn_on()
+    time.sleep(rate)
+    robot.led_system.right_led.turn_on()
+    time.sleep(rate)
+    robot.led_system.left_led.turn_off()
+    time.sleep(rate)
+    robot.led_system.right_led.turn_off()
+    time.sleep(rate)
 
 
 # -----------------------------------------------------------------------------

@@ -12,7 +12,7 @@ import time
 class DelegateThatReceives(object):
     def __init__(self, robot):
         """:type robot: rosebot.RoseBot"""
-        self.grab = m1_run_this_on_robot.Grab.beep_grab(robot)
+        self.grab = m1_extra.Grab(robot)
         self.robot = robot
         self.quit = False
 
@@ -147,4 +147,5 @@ class DelegateThatReceives(object):
         self.robot.drive_system.spin_counterclockwise_until_sees_object(speed, area)
 
     def led_system(self, rate, initial):
-        m3_run_this_on_robot.led()
+        # m3_run_this_on_laptop.led(rate, initial)
+        print('a')

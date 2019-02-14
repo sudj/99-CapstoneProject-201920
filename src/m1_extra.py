@@ -9,7 +9,6 @@ class Grab(object):
 
     def beep_grab(self):
         # starting_distance = self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()
-
         self.robot.drive_system.go(20, 20)
         if self.robot.sensor_system.ir_proximity_sensor.get_distance() > 0:
             while True:
