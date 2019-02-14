@@ -6,8 +6,7 @@
     and Christina Rogers, Jason Ims, Dan Su.
   Winter term, 2018-2019.
 """
-import m1_run_this_on_robot
-import m3_run_this_on_robot
+import m1_extra
 
 class DelegateThatReceives(object):
     def __init__(self, robot):
@@ -67,34 +66,68 @@ class DelegateThatReceives(object):
         while True:
             self.robot.drive_system.go(50, 50)
             print(self.robot.sensor_system.ir_proximity_sensor.get_distance())
-            if self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() < int(distance):
+            if self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() < (distance):
                 break
         self.robot.drive_system.go_straight_for_seconds(0, 0)
 
     def color_is(self, color, speed):
-        print('start')
+        print(color, speed)
         self.robot.drive_system.go_straight_until_color_is(color, speed)
 
     def color_is_not(self, color, speed):
-        print('start')
+        print(color, speed)
         self.robot.drive_system.go_straight_until_color_is_not(color, speed)
 
     def greater_intensity(self, intensity, speed):
-        print('start')
+        print(intensity, speed)
         self.robot.drive_system.go_straight_until_intensity_is_greater_than(intensity, speed)
 
     def less_intensity(self, intensity, speed):
-        print('start')
+        print(intensity, speed)
         self.robot.drive_system.go_straight_until_intensity_is_less_than(intensity, speed)
 
-    def pick_up_with_prox(self):
+    def pick_up_with_prox(self, factor):
+        print('Test')
         while True:
             self.robot.drive_system.go(50, 50)
-            print(self.robot.sensor_system.ir_proximity_sensor.get_distance())
+            if (self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 90:
+                self.robot.sound_system.tone_maker.play_tone(400, 10)
+            if (
+                    self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 75 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 90:
+                self.robot.sound_system.tone_maker.play_tone(400 * factor, 10)
+            if (
+                    self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 50 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 75:
+                self.robot.sound_system.tone_maker.play_tone(400 * 1.5 * factor, 10)
+            if (
+                    self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 25 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 50:
+                self.robot.sound_system.tone_maker.play_tone(400 * 2 * factor, 10)
+            if (
+                    self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 10 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 25:
+                self.robot.sound_system.tone_maker.play_tone(400 * 2.5 * factor, 10)
+            if (
+                    self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 5 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 10:
+                self.robot.sound_system.tone_maker.play_tone(400 * 3 * factor, 10)
+            if (
+                    self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 3 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 5:
+                self.robot.sound_system.tone_maker.play_tone(400 * 3.5 * factor, 10)
+            if (
+                    self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 1 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 3:
+                self.robot.sound_system.tone_maker.play_tone(400 * 4 * factor, 10)
             if self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() < 1.9:
                 self.robot.drive_system.go_straight_for_seconds(0, 0)
                 self.robot.arm_and_claw.raise_arm()
                 break
+    def m1_beep_grab(self):
+        self.grab.beep_grab()
+
+    def counter(self):
+        self.robot.drive_system.spin_clockwise_until_sees_object(50, 100)
+        self.pick_up_with_prox(2)
+
+    def clockwise(self):
+        self.robot.drive_system.spin_counterclockwise_until_sees_object(50, 100)
+        self.pick_up_with_prox(2)
+
 
     def camera(self):
         print(self.robot.drive_system.display_camera_data())
