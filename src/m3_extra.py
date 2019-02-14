@@ -17,6 +17,7 @@ def led(rate_of_increase, initial, robot):
             break
 
 
+
 def led_rotation(rate, robot):
     robot.led_system.left_led.turn_on()
     time.sleep(rate)
