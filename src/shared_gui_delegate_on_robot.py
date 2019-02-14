@@ -8,7 +8,7 @@
 """
 import m1_extra
 import time
-import m3_run_this_on_laptop
+import m3_extra
 
 class DelegateThatReceives(object):
     def __init__(self, robot):
@@ -148,5 +148,4 @@ class DelegateThatReceives(object):
         self.robot.drive_system.spin_counterclockwise_until_sees_object(speed, area)
 
     def led_system(self, rate, initial):
-        # m3_run_this_on_laptop.led(rate, initial, self.robot)
-        print(rate, initial)
+        m3_extra.led(rate, initial, self.robot)
