@@ -80,7 +80,6 @@ def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep
     # led_frame.grid(row=0, column=2)
 
 
-
 def led(rate_of_increase, initial, robot):
     print (rate_of_increase, initial)
     robot.drive_system.go(50, 50)
