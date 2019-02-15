@@ -81,6 +81,42 @@ def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep
     led_frame.grid(row=0, column=2)
 
 
+# def led(rate_of_increase, initial, robot):
+#     print (rate_of_increase, initial)
+#     robot.drive_system.go(25, 25)
+#     initial_distance = robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()
+#     rate=initial
+#     while True:
+#         led_rotation(rate, robot)
+#         distance_traveled = initial_distance - robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()
+#         # if distance_traveled > 1:
+#         #     rate = rate - distance_traveled/initial_distance * rate_of_increase
+#         print('distance')
+#         if robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() <= 2.0:
+#             robot.drive_system.stop()
+#             print('stop')
+#             robot.arm_and_claw.raise_arm()
+#             break
+
+def led_rotation(rate, robot):
+    robot.led_system.left_led.turn_on()
+    time.sleep(rate)
+    robot.led_system.left_led.turn_off()
+    time.sleep(rate)
+    robot.led_system.right_led.turn_on()
+    time.sleep(rate)
+    robot.led_system.right_led.turn_off()
+    time.sleep(rate)
+    robot.led_system.left_led.turn_on()
+    time.sleep(rate)
+    robot.led_system.right_led.turn_on()
+    time.sleep(rate)
+    robot.led_system.left_led.turn_off()
+    time.sleep(rate)
+    robot.led_system.right_led.turn_off()
+    time.sleep(rate)
+
+
 # -----------------------------------------------------------------------------
 # Calls  main  to start the ball rolling.
 # -----------------------------------------------------------------------------

@@ -244,8 +244,10 @@ def led_frame(window, mqtt_sender):
     title_label = ttk.Label(frame, text='LED system')
     rate_label = ttk.Label(frame, text='Rate: ')
     rate_entry = ttk.Entry(frame, width=8)
+    rate_entry.insert(0, '.5')
     initial_label = ttk.Label(frame, text='Initial Speed: ')
     initial_entry = ttk.Entry(frame, width=8)
+    rate_entry.insert(0, '2')
     button = ttk.Button(frame, text='go')
 
     title_label.grid(row=0, column=0)
@@ -255,7 +257,7 @@ def led_frame(window, mqtt_sender):
     initial_entry.grid(row=1, column=1)
     button.grid(row=3, column=1)
 
-    button['command'] = lambda: mqtt_sender.send_message('led_system', [int(rate_entry.get()), int(initial_entry.get())])
+    button['command'] = lambda: mqtt_sender.send_message('led_system', [float(rate_entry.get()), float(initial_entry.get())])
 
     return frame
 
