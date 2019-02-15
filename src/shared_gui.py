@@ -247,7 +247,7 @@ def led_frame(window, mqtt_sender):
     rate_entry.insert(0, '.5')
     initial_label = ttk.Label(frame, text='Initial Speed: ')
     initial_entry = ttk.Entry(frame, width=8)
-    rate_entry.insert(0, '2')
+    initial_entry.insert(0, '2')
     button = ttk.Button(frame, text='go')
 
     title_label.grid(row=0, column=0)
