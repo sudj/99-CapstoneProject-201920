@@ -41,7 +41,7 @@ def main():
     # -------------------------------------------------------------------------
     # Sub-frames for the shared GUI that the team developed:
     # -------------------------------------------------------------------------
-    teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, color_frame, grab_frame, camera_frame = get_shared_frames(main_frame, mqtt_sender)
+    intro_frame, play_frame, eat_frame, sleep_frame = get_shared_frames(main_frame, mqtt_sender)
 
 
 
@@ -53,7 +53,7 @@ def main():
     # -------------------------------------------------------------------------
     # Grid the frames.
     # -------------------------------------------------------------------------
-    grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame,color_frame, grab_frame, camera_frame)
+    grid_frames(intro_frame, play_frame, eat_frame, sleep_frame)
 
 
     # -------------------------------------------------------------------------
@@ -62,118 +62,97 @@ def main():
     root.mainloop()
 
 def get_shared_frames(main_frame, mqtt_sender):
-    teleop_frame = shared_gui.get_teleoperation_frame(main_frame, mqtt_sender)
-    arm_frame = shared_gui.get_arm_frame(main_frame, mqtt_sender)
-    control_frame = shared_gui.get_control_frame(main_frame, mqtt_sender)
-    drive_system_frame = shared_gui.get_drive_system_frame(main_frame, mqtt_sender)
-    beep_frame = shared_gui.beep_frame(main_frame, mqtt_sender)
-    color_frame = color_test(main_frame, mqtt_sender)
-    grab_frame = beep_finder(main_frame, mqtt_sender)
-    camera_frame = shared_gui.camera_frame(main_frame, mqtt_sender)
+    intro_frame = title_screen(main_frame, mqtt_sender)
+    play_frame = play_window(main_frame, mqtt_sender)
+    eat_frame = eat_window(main_frame, mqtt_sender)
+    sleep_frame =  sleep_window(main_frame, mqtt_sender)
 
-    return teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, color_frame, grab_frame, camera_frame
+    return intro_frame, play_frame, eat_frame, sleep_frame
 
 
-def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame,beep_frame, color_frame, grab_frame, camera_frame):
-    teleop_frame.grid(row=0, column=0)
-    arm_frame.grid(row=1, column=0)
-    control_frame.grid(row=2, column=0)
-    drive_system_frame.grid(row=0, column=1)
-    beep_frame.grid(row=1, column=1)
-    color_frame.grid(row=2, column=1)
-    grab_frame.grid(row=3, column=0)
-    camera_frame.grid(row=3, column=1)
+def grid_frames(intro_frame, play_frame, eat_frame, sleep_frame):
+    intro_frame.grid(row=0, column=0)
+    play_frame.grid(row=1, column=0)
+    eat_frame.grid(row=2, column=0)
+    sleep_frame.grid(row=3, column=0)
 
-
-def color_test(window, mqtt_sender):
-    """ :type  window:       ttk.Frame | ttk.Toplevel
-      :type  mqtt_sender:  com.MqttClient"""
-
-    frame = ttk.Frame(window, padding=10, borderwidth=10, relief="ridge")
+def sleep_window(window, mqtt_sender):
+    frame = ttk.Frame(window, padding=10, borderwidth=1)
     frame.grid()
 
-    # Construct the widgets on the frame:
-    frame_label = ttk.Label(frame, text="Color Methods")
-    speed_label = ttk.Label(frame, text="Wheel speed (0 to 100)")
-    intensity_label = ttk.Label(frame, text="Intensity (1 to 100)")
-    color_label = ttk.Label(frame, text='color(either int or str)')
+    sleep_button = ttk.Button(frame, text='Go to Sleep')
 
-    speed_entry = ttk.Entry(frame, width=8)
-    speed_entry.insert(0, "0")
-    intensity_entry = ttk.Entry(frame, width=8)
-    intensity_entry.insert(0, "0")
-    color_entry = ttk.Entry(frame, width=8)
-    color_entry.insert(0,'0')
-
-    straight_less_intensity_button = ttk.Button(frame, text="Until Intensity is less than")
-    straight_geater_intensity_button = ttk.Button(frame, text="Until Intensity is greater than")
-    straight_color_is_button = ttk.Button(frame, text='Until color is')
-    straight_color_is_not_button = ttk.Button(frame, text='Until color is not')
-
-    # Grid the widgets:
-    frame_label.grid(row=0, column=1)
-    speed_entry.grid(row=1, column=0)
-    intensity_entry.grid(row=1, column=1)
-    color_entry.grid(row=1, column=2)
-    speed_label.grid(row=2, column=0)
-    intensity_label.grid(row=2, column=1)
-    color_label.grid(row=2, column=2)
-
-    straight_less_intensity_button.grid(row=3, column=0)
-    straight_geater_intensity_button.grid(row=3, column=2)
-    straight_color_is_button.grid(row=4, column=0)
-    straight_color_is_not_button.grid(row=4, column=2)
-
-    # Set the button callbacks:
-    straight_color_is_button["command"] = lambda: handle_color_is(
-        color_entry, speed_entry, mqtt_sender)
-    straight_color_is_not_button["command"] = lambda: handle_color_is_not(
-        color_entry, speed_entry, mqtt_sender)
-    straight_geater_intensity_button["command"] = lambda: handle_greater_intensity(
-        intensity_entry, speed_entry, mqtt_sender)
-    straight_less_intensity_button["command"] = lambda: handle_less_intensity(
-        intensity_entry, speed_entry, mqtt_sender)
+    sleep_button.grid(row=0, column=0)
 
     return frame
 
-def beep_finder(window, mqtt_sender):
-    frame = ttk.Frame(window, padding=10, borderwidth=10, relief="ridge")
+def eat_window(window, mqtt_sender):
+    frame = ttk.Frame(window, padding=10, borderwidth=1)
     frame.grid()
 
-    frame_label = ttk.Label(frame, text="Beeping Finder")
-    beep_label = ttk.Label(frame, text='Beeper')
+    eat_lable = ttk.Label(frame, text='Eating (time)', font=('Arial Bold', 10))
+    eat_entry = ttk.Entry(frame, width=8)
+    eat_button = ttk.Button(frame, text='Start')
+    eat_progress = ttk.Progressbar(frame, orient='horizontal', length=287, mode='determinate')
 
-    beep_button = ttk.Button(frame, text="Grab while Beeping")
-
-    frame_label.grid(row=0, column=0)
-    beep_label.grid(row=1, column=0)
-    beep_button.grid(row=2, column=0)
-
-    beep_button['command'] = lambda: handle_beep_grab(mqtt_sender)
+    eat_lable.grid(row=0, column=0)
+    eat_entry.grid(row=0, column=1)
+    eat_button.grid(row=0, column=2)
+    eat_progress.grid(row=1, column=0, pady=10)
 
     return frame
 
+def play_window(window, mqtt_sender):
+    frame = ttk.Frame(window, padding=10, borderwidth=1)
+    frame.grid()
+
+    play_lable = ttk.Label(frame, text='Play with Yarn (time)', font=('Arial Bold', 10))
+    play_entry = ttk.Entry(frame, width=8)
+    play_button = ttk.Button(frame, text='Start')
+    play_progress = ttk.Progressbar(frame, orient='horizontal', length=287, mode='determinate')
+
+    play_lable.grid(row=0, column=0)
+    play_entry.grid(row=0, column=1)
+    play_button.grid(row=0, column=2)
+    play_progress.grid(row=1, column=0, pady=10)
+
+    play_button['command'] = lambda: handle_play(mqtt_sender, play_entry)
+
+    return frame
+
+def title_screen(window, mqtt_sender):
+    frame = ttk.Frame(window, padding=10, borderwidth=1, relief='ridge')
+    frame.grid()
+
+    intro_button = ttk.Button(frame, text='Intro')
+    title_lable = ttk.Label(frame, text='Cat Remote', font=('Arial Bold', 50))
+
+    title_lable.grid(row=0, column=1)
+    intro_button.grid(row=2, column=0)
+
+    # intro_button['command'] = lambda: handle_intro(mqtt_sender)
+
+    return frame
+
+def handle_intro(mqtt_sender):
+    mqtt_sender.send_message('m1_intro')
+
+def handle_play(mqtt_sender, play_entry):
+    mqtt_sender.send_message('m1_play', [play_entry.get()])
 
 
 
-def handle_color_is(color_entry, speed_entry, mqtt_sender):
-    s = [color_entry.get(), speed_entry.get()]
-    mqtt_sender.send_message('color_is', s)
 
-def handle_color_is_not(color_entry, speed_entry, mqtt_sender):
-    s = [color_entry.get(), speed_entry.get()]
-    mqtt_sender.send_message('color_is_not', s)
 
-def handle_greater_intensity(intensity_entry, speed_entry, mqtt_sender):
-    s = [intensity_entry.get(), speed_entry.get()]
-    mqtt_sender.send_message('greater_intensity', s)
 
-def handle_less_intensity(intensity_entry, speed_entry, mqtt_sender):
-    s = [intensity_entry.get(), speed_entry.get()]
-    mqtt_sender.send_message('less_intensity', s)
 
-def handle_beep_grab(mqtt_sender):
-    mqtt_sender.send_message('m1_beep_grab')
+def m1_intro(self):
+    self.cat.intro()
+
+def m1_play(self, play_entry):
+    self.cat.play_till(int(play_entry))
+
+
 
 
 # -----------------------------------------------------------------------------

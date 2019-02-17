@@ -2,7 +2,7 @@ import time
 import rosebot
 
 
-class Grab(object):
+class Cat(object):
     def __init__(self, robot):
         """:type robot: rosebot.RoseBot"""
         self.robot = robot
@@ -20,3 +20,14 @@ class Grab(object):
                     self.robot.sound_system.beeper.beep()
                     time.sleep(abs(distance_away / 20))
             self.robot.arm_and_claw.raise_arm()
+
+
+
+
+
+
+
+
+
+
+###gui delegate

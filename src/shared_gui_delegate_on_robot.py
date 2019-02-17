@@ -13,7 +13,7 @@ import m3_extra
 class DelegateThatReceives(object):
     def __init__(self, robot):
         """:type robot: rosebot.RoseBot"""
-        self.grab = m1_extra.Grab(robot)
+        self.cat = m1_extra.Cat(robot)
         self.robot = robot
         self.quit = False
 
