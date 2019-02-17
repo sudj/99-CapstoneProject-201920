@@ -71,7 +71,7 @@ class DelegateThatReceives(object):
             if self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() < int(distance):
                 break
         self.robot.drive_system.go_straight_for_seconds(0, 0)
-
+        self.robot.arm_and_claw.raise_arm()
     def color_is(self, color, speed):
         print(color, speed)
         self.robot.drive_system.go_straight_until_color_is(color, speed)
@@ -92,36 +92,37 @@ class DelegateThatReceives(object):
         print('Test')
         while True:
             self.robot.drive_system.go(50, 50)
-            if (self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 90:
-                self.robot.sound_system.tone_maker.play_tone(400, 2000)
+            if (self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()) > 90:
+                self.robot.sound_system.tone_maker.play_tone(400, 1000)
+                # time.sleep(1)
             if (
                     self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 75 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 90:
                 self.robot.sound_system.tone_maker.play_tone(400 * int(factor), 1000)
-                time.sleep(1)
+                # time.sleep(1)
             if (
                     self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 50 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 75:
                 self.robot.sound_system.tone_maker.play_tone(400 * 1.5 * int(factor), 1000)
-                time.sleep(1)
+                # time.sleep(1)
             if (
                     self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 25 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 50:
                 self.robot.sound_system.tone_maker.play_tone(400 * 2 * int(factor), 1000)
-                time.sleep(1)
+                # time.sleep(1)
             if (
                     self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 10 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 25:
                 self.robot.sound_system.tone_maker.play_tone(400 * 2.5 * int(factor), 1000)
-                time.sleep(1)
+                # time.sleep(1)
             if (
                     self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 5 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 10:
                 self.robot.sound_system.tone_maker.play_tone(400 * 3 * int(factor), 1000)
-                time.sleep(1)
+                # time.sleep(1)
             if (
                     self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 3 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 5:
                 self.robot.sound_system.tone_maker.play_tone(400 * 3.5 * int(factor), 1000)
-                time.sleep(1)
+                # time.sleep(1)
             if (
                     self.robot.sensor_system.ir_proximity_sensor.get_distance()) > 1 and self.robot.sensor_system.ir_proximity_sensor.get_distance() < 3:
                 self.robot.sound_system.tone_maker.play_tone(400 * 4 * int(factor), 1000)
-                time.sleep(1)
+                # time.sleep(1)
             if self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() < 1.9:
                 self.robot.drive_system.go_straight_for_seconds(0, 0)
                 self.robot.arm_and_claw.raise_arm()
