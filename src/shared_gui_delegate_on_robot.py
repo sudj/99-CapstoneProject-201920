@@ -14,6 +14,7 @@ class DelegateThatReceives(object):
     def __init__(self, robot):
         """:type robot: rosebot.RoseBot"""
         self.cat = m1_extra.Cat(robot)
+        self.grab = m1_extra.Grab(robot)
         self.robot = robot
         self.quit = False
 
