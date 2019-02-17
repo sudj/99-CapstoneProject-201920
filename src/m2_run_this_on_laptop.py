@@ -11,6 +11,7 @@ import mqtt_remote_method_calls as com
 import tkinter
 from tkinter import ttk
 import shared_gui
+import m2_extra
 
 
 def main():
@@ -40,7 +41,7 @@ def main():
     # -------------------------------------------------------------------------
     # Sub-frames for the shared GUI that the team developed:
     # -------------------------------------------------------------------------
-    teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, ir_frame, camera = get_shared_frames(main_frame, mqtt_sender)
+    teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, ir_frame, camera, firefighter = get_shared_frames(main_frame, mqtt_sender)
 
     # -------------------------------------------------------------------------
     # Frames that are particular to my individual contributions to the project.
@@ -50,7 +51,7 @@ def main():
     # -------------------------------------------------------------------------
     # Grid the frames.
     # -------------------------------------------------------------------------
-    grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, ir_frame, camera)
+    grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, ir_frame, camera, firefighter)
 
     # -------------------------------------------------------------------------
     # The event loop:
@@ -66,11 +67,12 @@ def get_shared_frames(main_frame, mqtt_sender):
     beep_frame = shared_gui.beep_frame(main_frame,mqtt_sender)
     ir = ir_frame(main_frame,mqtt_sender)
     camera = camera_frame(main_frame,mqtt_sender)
+    firefighter = Firefighter_frame(main_frame, mqtt_sender)
 
-    return teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, ir, camera
+    return teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, ir, camera, firefighter
 
 
-def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, ir, camera):
+def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, ir, camera, firefighter):
     teleop_frame.grid(row=0, column=0)
     arm_frame.grid(row=1, column=0)
     control_frame.grid(row=2, column=0)
@@ -78,6 +80,7 @@ def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep
     beep_frame.grid(row=1, column=1)
     ir.grid(row=3,column=0)
     camera.grid(row=2, column=1)
+    firefighter.grid(row=3, column=1)
 
 # Extra Frames
 def ir_frame(window, mqtt_sender):
@@ -137,6 +140,53 @@ def camera_frame(window, mqtt_sender):
     counter['command'] = lambda : handle_counter(mqtt_sender, speed_entry, area_entry)
 
     return frame
+
+def Firefighter_frame(window,mqtt_sender):
+    frame = ttk.Frame(window, padding=10, borderwidth=5, relief="ridge")
+    frame.grid()
+
+    title = ttk.Label(frame, text='Firefighting Mode')
+    alarm = ttk.Button(frame, text='Sound the Alarm!!')
+    find_water = ttk.Button(frame, text='Find Water')
+    blank = ttk.Label(frame, text='')
+    pick_up_water = ttk.Button(frame, text='Pick up the water')
+    check1 = ttk.Progressbar(frame)
+    turn_and_find_fire = ttk.Button(frame, text='Find the Fire')
+
+    check1.grid(row=2, column=1)
+    title.grid(row=0, column=2)
+    alarm.grid(row=2, column=0)
+    find_water.grid(row=3, column=0)
+    blank.grid(row=1, column=1)
+    pick_up_water.grid(row=4, column=0)
+    turn_and_find_fire.grid(row=5, column=0)
+
+    alarm['command'] = lambda: handle_alarm(mqtt_sender, check1)
+    find_water['command'] = lambda: handle_find_water(mqtt_sender, check1)
+    pick_up_water['command'] = lambda: handle_pickup_water(mqtt_sender,check1)
+    turn_and_find_fire['command'] = lambda: handle_find_fire(mqtt_sender,check1)
+
+    return frame
+
+def handle_alarm(mqtt_sender, check1):
+    mqtt_sender.send_message('alarm_sound')
+    check1.step(20)
+
+def handle_find_water(mqtt_sender, check1):
+    mqtt_sender.send_message('clockwise')
+    check1.step(20)
+
+def handle_pickup_water(mqtt_sender, check1):
+    mqtt_sender.send_message('pick_up_water')
+    check1.step(20)
+
+def handle_find_fire(mqtt_sender, check1):
+    mqtt_sender.send_message('find_fire')
+    check1.step(20)
+
+def handle_put_out_fire(mqtt_sender, check1):
+    mqtt_sender.send_message('put_fire_out')
+    check1.step(19)
 
 
 
