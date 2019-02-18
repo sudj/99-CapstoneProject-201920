@@ -24,7 +24,7 @@ class Cat(object):
                 time.sleep(1)
                 self.robot.drive_system.go(50, -50)
                 time.sleep(1)
-                self
+                self.robot.drive_system.stop()
             time.sleep(5)
             self.robot.arm_and_claw.lower_arm()
             self.robot.sound_system.speech_maker.speak('Ok you can throw to ball now')

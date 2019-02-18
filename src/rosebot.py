@@ -330,7 +330,7 @@ class DriveSystem(object):
             self.display_camera_data()
             if (self.b.height*self.b.width) >= area:
                 break
-            # print(self.b.height, self.b.width, self.b.height*self.b.width)
+            print(self.b.height, self.b.width, self.b.height*self.b.width)
         self.right_motor.turn_off()
         self.left_motor.turn_off()
 
