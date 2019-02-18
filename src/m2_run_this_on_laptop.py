@@ -11,7 +11,7 @@ import mqtt_remote_method_calls as com
 import tkinter
 from tkinter import ttk
 import shared_gui
-import m2_extra
+# import m2_extra
 
 
 def main():
@@ -152,6 +152,7 @@ def Firefighter_frame(window,mqtt_sender):
     pick_up_water = ttk.Button(frame, text='Pick up the water')
     check1 = ttk.Progressbar(frame)
     turn_and_find_fire = ttk.Button(frame, text='Find the Fire')
+    drop_water = ttk.Button(frame, text='Put the fire out')
 
     check1.grid(row=2, column=1)
     title.grid(row=0, column=2)
@@ -160,11 +161,14 @@ def Firefighter_frame(window,mqtt_sender):
     blank.grid(row=1, column=1)
     pick_up_water.grid(row=4, column=0)
     turn_and_find_fire.grid(row=5, column=0)
+    drop_water.grid(row=6, column=0)
 
     alarm['command'] = lambda: handle_alarm(mqtt_sender, check1)
     find_water['command'] = lambda: handle_find_water(mqtt_sender, check1)
     pick_up_water['command'] = lambda: handle_pickup_water(mqtt_sender,check1)
     turn_and_find_fire['command'] = lambda: handle_find_fire(mqtt_sender,check1)
+    drop_water['command'] = lambda: handle_put_out_fire(mqtt_sender,check1)
+
 
     return frame
 
