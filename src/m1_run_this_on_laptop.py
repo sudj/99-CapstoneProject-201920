@@ -144,7 +144,7 @@ def handle_play(mqtt_sender, play_entry, play_progress):
         play_progress.update()
 
 def handle_eat(mqtt_sender, eat_entry, eat_progress):
-    mqtt_sender.send_message('m1_eat', [eat_entry.get()])
+    mqtt_sender.send_message('m1_eat')
     eat_progress['maximum'] = 100
     a = 0
     b = int(eat_entry.get())
