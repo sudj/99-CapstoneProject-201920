@@ -67,8 +67,8 @@ class DelegateThatReceives(object):
         print('Distance:')
 
         while True:
-            self.robot.drive_system.go(50, 50)
-            print(self.robot.sensor_system.ir_proximity_sensor.get_distance())
+            self.robot.drive_system.go(65, 65)
+            print(self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches())
             if self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() < int(distance):
                 break
         self.robot.drive_system.go_straight_for_seconds(0, 0)
@@ -132,12 +132,12 @@ class DelegateThatReceives(object):
         self.grab.beep_grab()
 
     def counter(self):
-        self.robot.drive_system.spin_clockwise_until_sees_object(50, 100)
-        self.pick_up_with_prox(2)
+        self.robot.drive_system.spin_clockwise_until_sees_object(35, 200)
+        self.ir_test(2.4)
 
     def clockwise(self):
-        self.robot.drive_system.spin_counterclockwise_until_sees_object(50, 100)
-        self.pick_up_with_prox(2)
+        self.robot.drive_system.spin_counterclockwise_until_sees_object(35, 200)
+        self.ir_test(1.5)
 
 
     def camera(self):
@@ -158,21 +158,23 @@ class DelegateThatReceives(object):
         print('Test')
         while True:
             self.robot.drive_system.go(50, 50)
-            if self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() < 1.9:
+            if self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches() < 1:
                 self.robot.drive_system.go_straight_for_seconds(0, 0)
                 self.robot.arm_and_claw.raise_arm()
                 break
 
     def alarm_sound(self):
-        for k in range(2):
-            self.robot.sound_system.tone_maker.play_tone(400, 1000)
-            self.robot.sound_system.tone_maker.play_tone(1400, 1000)
+        self.robot.sound_system.speech_maker('Oh no there is a fire, I am going to put the fire out')
+
 
     def find_fire(self):
         self.robot.drive_system.go(50, -50)
-        time.sleep(.2)
-        self.robot.drive_system.go(0, 0)
-        self.robot.drive_system.go_straight_until_color_is('red', 50)
+        time.sleep(3.2)
+        while True:
+            self.robot.drive_system.go(50, 50)
+            if self.robot.sensor_system.color_sensor.get_color()==5:
+                break
+        self.robot.drive_system.go(0,0)
 
     def put_fire_out(self):
         self.robot.arm_and_claw.calibrate_arm()
