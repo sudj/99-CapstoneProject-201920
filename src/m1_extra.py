@@ -7,6 +7,10 @@ class Cat(object):
         """:type robot: rosebot.RoseBot"""
         self.robot = robot
 
+    def intro(self):
+        print('Congradulations on getting your very own cat-robot. This robot wcan act like a cat and has several functions it can perform. You can feed it pla with it and then finally put it to sleep' )
+
+
     def play_till(self, play_entry):
         for k in range(play_entry):
             self.robot.drive_system.spin_counterclockwise_until_beacon_heading_is_nonpositive(80)

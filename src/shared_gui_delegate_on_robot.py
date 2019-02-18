@@ -178,3 +178,12 @@ class DelegateThatReceives(object):
 
     def put_fire_out(self):
         self.robot.arm_and_claw.calibrate_arm()
+
+    def m1_play(self, play_entry):
+        self.cat.play_till(int(play_entry.get()))
+
+    def m1_cry(self):
+        self.cat.cry()
+
+    def m1_nap(self):
+        self.cet.nap()
