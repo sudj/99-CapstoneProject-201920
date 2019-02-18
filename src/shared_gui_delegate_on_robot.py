@@ -187,3 +187,6 @@ class DelegateThatReceives(object):
 
     def m1_nap(self):
         self.cet.nap()
+
+    def m1_eat(self):
+        self.cat.eat()
