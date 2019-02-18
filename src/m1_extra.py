@@ -13,9 +13,6 @@ class Cat(object):
             inch = self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()
             self.robot.drive_system.go_straight_for_inches_using_encoder(inch, 50)
 
-    def play_bar(self, play_progress):
-        start = time.time()
-        play_progress['value'] = time.time - start
 
 
 

@@ -107,6 +107,8 @@ def play_window(window, mqtt_sender):
     frame = ttk.Frame(window, padding=10, borderwidth=1)
     frame.grid()
 
+    times_run = 0
+
     play_lable = ttk.Label(frame, text='Play with Yarn (time)', font=('Arial Bold', 10))
     play_entry = ttk.Entry(frame, width=8)
     play_button = ttk.Button(frame, text='Start')
@@ -118,7 +120,7 @@ def play_window(window, mqtt_sender):
     play_button.grid(row=0, column=2)
     play_progress.grid(row=1, column=0, pady=10)
 
-    play_button['command'] = lambda: handle_play(mqtt_sender, play_entry, play_progress)
+    play_button['command'] = lambda: handle_play(mqtt_sender, play_entry, play_progress, times_run)
 
     return frame
 
@@ -139,8 +141,15 @@ def title_screen(window, mqtt_sender):
 def handle_intro(mqtt_sender):
     mqtt_sender.send_message('m1_intro')
 
-def handle_play(mqtt_sender, play_entry, play_progress):
-    mqtt_sender.send_message('m1_play', [play_entry.get()], play_progress)
+def handle_play(mqtt_sender, play_entry, play_progress, times_run):
+    mqtt_sender.send_message('m1_play', [play_entry.get()])
+    play_progress['maximum'] = 100
+        a = 0
+        b = int(play_entry.get())
+        for k in range(a, b):
+            time.sleep(0.05)
+            play_progress['value'] = k -100
+            play_progress.update()
 
 
 
@@ -149,14 +158,11 @@ def handle_play(mqtt_sender, play_entry, play_progress):
 
 
 
+def m1_intro(self):
+    self.cat.intro()
 
-
-# def m1_intro(self):
-#     self.cat.intro()
-#
-# def m1_play(self, play_entry, play_progress):
-#     self.cat.play_till(int(play_entry.get()))
-#     self.cat.Play_bar(play_progress)
+def m1_play(self, play_entry):
+    self.cat.play_till(int(play_entry.get()))
 
 
 

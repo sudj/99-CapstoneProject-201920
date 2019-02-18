@@ -151,7 +151,3 @@ class DelegateThatReceives(object):
 
     def led_system(self, rate, initial):
         m3_extra.led(rate, initial, self.robot)
-
-    def m1_play(self, play_entry, play_progress):
-        self.cat.play_till(int(play_entry.get()))
-        self.cat.play_bar(play_progress)
