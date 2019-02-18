@@ -78,7 +78,7 @@ def function_window(window, mqtt_sender):
     frame = ttk.Frame(window, padding=10, borderwidth=1)
     frame.grid()
 
-    eat_lable = ttk.Label(frame, text='Eating (time)', font=('Arial Bold', 10))
+    eat_lable = ttk.Label(frame, text='Eating (Happiness)', font=('Arial Bold', 10))
     eat_entry = ttk.Entry(frame, width=8)
     eat_button = ttk.Button(frame, text='Start')
     eat_progress = ttk.Progressbar(frame, orient='horizontal', length=287, mode='determinate')
@@ -93,7 +93,7 @@ def function_window(window, mqtt_sender):
 
 
 
-    play_lable = ttk.Label(frame, text='Play with Yarn (time)', font=('Arial Bold', 10))
+    play_lable = ttk.Label(frame, text='Play with Yarn (Happiness)', font=('Arial Bold', 10))
     play_entry = ttk.Entry(frame, width=8)
     play_button = ttk.Button(frame, text='Start')
     play_progress = ttk.Progressbar(frame, orient='horizontal', length=287, mode='determinate')
@@ -144,7 +144,7 @@ def handle_play(mqtt_sender, play_entry, play_progress):
         play_progress.update()
 
 def handle_eat(mqtt_sender, eat_entry, eat_progress):
-    mqtt_sender.send_message('m1_play', [eat_entry.get()])
+    mqtt_sender.send_message('m1_eat', [eat_entry.get()])
     eat_progress['maximum'] = 100
     a = 0
     b = int(eat_entry.get())
@@ -156,7 +156,7 @@ def handle_eat(mqtt_sender, eat_entry, eat_progress):
 def handle_sleep(mqtt_sender, play_progress, eat_progress):
     if (play_progress['value'] and eat_progress['value']) >= 99:
         mqtt_sender.send_message('m1_nap')
-        time.sleep(10)
+        time.sleep(3)
         play_progress['value'] = 0
         play_progress.update()
         time.sleep(0.05)

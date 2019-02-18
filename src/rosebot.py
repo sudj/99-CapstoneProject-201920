@@ -132,7 +132,6 @@ class DriveSystem(object):
         #     if (abs(initial_position - self.left_motor.get_position()) * inches_per_degree) >= inches:
         #         self.stop()
         #         break
-        print('here')
         inches_per_degree = (1.3*math.pi) / 360
         desired_degrees = inches / inches_per_degree
         self.left_motor.reset_position()
@@ -331,7 +330,7 @@ class DriveSystem(object):
             self.display_camera_data()
             if (self.b.height*self.b.width) >= area:
                 break
-            print(self.b.height, self.b.width, self.b.height*self.b.width)
+            # print(self.b.height, self.b.width, self.b.height*self.b.width)
         self.right_motor.turn_off()
         self.left_motor.turn_off()
 

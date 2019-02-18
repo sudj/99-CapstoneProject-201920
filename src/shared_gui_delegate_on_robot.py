@@ -180,7 +180,7 @@ class DelegateThatReceives(object):
         self.robot.arm_and_claw.calibrate_arm()
 
     def m1_play(self, play_entry):
-        self.cat.play_till(int(play_entry.get()))
+        self.cat.play_till(int(play_entry))
 
     def m1_cry(self):
         self.cat.cry()
