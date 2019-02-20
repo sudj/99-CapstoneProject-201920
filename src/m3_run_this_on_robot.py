@@ -25,6 +25,8 @@ def main():
 
 
 def real_thing():
+    """ Connects the robot to the PC and receives messages that it then looks for
+    as functions in shared_gui_delegate_on_robot"""
     robot = rosebot.RoseBot()
     delegate_that_receives = shared_gui_delegate_on_robot.DelegateThatReceives(robot)
     mqtt_receiver = com.MqttClient(delegate_that_receives)
@@ -32,6 +34,8 @@ def real_thing():
 
     while True:
         time.sleep(0.01)
+        if robot.sensor_system.color_sensor.get_color_as_name() == 'Black':
+            mqtt_receiver.send_message('endRace')
         if delegate_that_receives.quit:
             break
 

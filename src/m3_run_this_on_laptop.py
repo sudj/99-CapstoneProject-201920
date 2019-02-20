@@ -82,22 +82,17 @@ def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep
     led_frame.grid(row=0, column=2)
 
 
-# -----------------------------------------------------------------------------
-# Calls  main  to start the ball rolling.
-# -----------------------------------------------------------------------------
 
-
+# This class is for the final project
 class m3_GUI(object):
     def __init__(self):
-        self.delegate = Delegate_on_laptop()
-
-        self.mqtt_sender = com.MqttClient(self.delegate)
+        delegate = delegate_on_laptop()
+        self.mqtt_sender = com.MqttClient(delegate)
         self.mqtt_sender.connect_to_ev3()
         # Declaring variables
         self.time_initial = time.time()
         self.energy = 100
         self.speed = 0
-        self.laps_to_go = 3
 
         self.root = tkinter.Tk()
         self.root.title('CSSE120 Capstone Project')
@@ -196,6 +191,7 @@ class m3_GUI(object):
         self.energy = self.energy - (.001 * int(self.speed))
         if self.energy <= 0:
             self.energy = 0
+            self.mqtt_sender.send_message('forward', [0,0])
             self.mqtt_sender.send_message('phrase', ['good bye'])
             self.mqtt_sender.send_message('is_quit')
         self.play_frame.children['!label3'].config(text=str(int(self.energy)) + '%')
@@ -210,11 +206,19 @@ class m3_GUI(object):
         self.root.after(500, lambda: self.loop())
         self.root.mainloop()
 
-class Delegate_on_laptop(object):
-    def __init__(self):
+    def win(self):
+        self.mqtt_sender.send_message('go', [0,0])
+        self.mqtt_sender.send_message('calibrate_arm')
+        self.mqtt_sender.send_message('phrase', ['you win!'])
+        self.mqtt_sender.send_message('is_quit')
+
+    def reciever(self):
         pass
 
-
+class delegate_on_laptop(object):
+    def endRace(self):
+        print('end race')
+        # m3_GUI.win(m3_GUI)
 
 GUI = m3_GUI()
 GUI.open()
