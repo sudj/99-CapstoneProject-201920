@@ -41,12 +41,13 @@ class Cat(object):
             self.robot.sound_system.speech_maker.speak('meow').wait()
 
     def eat(self):
-        self.robot.drive_system.go(100, 80)
         while True:
             if self.robot.sensor_system.color_sensor.get_color_as_name() is 'Blue':
                 break
+        self.robot.sound_system.speech_maker.speak('yum yum yum').wait()
+        time.sleep(0.5)
         self.robot.drive_system.stop()
-        self.robot.sound_system.speech_maker.speak('yum yum yum')
+
 
 
 

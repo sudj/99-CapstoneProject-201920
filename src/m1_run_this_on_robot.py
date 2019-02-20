@@ -29,6 +29,7 @@ def real_thing(robot):
     mqtt_receiver.connect_to_pc()
 
 
+
     while True:
         time.sleep(0.01)
         if robot.sensor_system.color_sensor.get_color_as_name() == 'Blue':

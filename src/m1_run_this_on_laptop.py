@@ -24,11 +24,9 @@ def main():
     # -------------------------------------------------------------------------
     # Construct and connect the MQTT Client:
     # -------------------------------------------------------------------------
+    # delagate = Delegate_on_laptop()
     mqtt_sender = com.MqttClient()
     mqtt_sender.connect_to_ev3()
-    delagate = Delegate_on_laptop()
-    mqtt_receiver = com.MqttClient(delagate)
-    mqtt_receiver.connect_to_ev3()
 
 
     # -------------------------------------------------------------------------
@@ -177,20 +175,20 @@ def handle_sleep(mqtt_sender, play_progress, eat_progress):
 
 
 
-
-
-def m1_play(self, play_entry):
-    self.cat.play_till(int(play_entry.get()))
-
-def m1_cry(self):
-    self.cat.cry()
-
-def m1_nap(self):
-    self.cet.nap()
-
-class Delegate_on_laptop(object):
-    def eating_time(self):
-        print('This food looks yummy!')
+#
+#
+# def m1_play(self, play_entry):
+#     self.cat.play_till(int(play_entry.get()))
+#
+# def m1_cry(self):
+#     self.cat.cry()
+#
+# def m1_nap(self):
+#     self.cet.nap()
+#
+# class Delegate_on_laptop(object):
+#     def eating_time(self):
+#         print('This food looks yummy!')
 
 
 
