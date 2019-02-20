@@ -342,6 +342,15 @@ class DriveSystem(object):
         """
         self.spin_clockwise_until_sees_object(-speed, area)
 
+    def m3_spin(self):
+        self.left_motor.reset_position()
+        self.left_motor.turn_on(40)
+        while True:
+            print(self.left_motor.get_position())
+            if self.left_motor.get_position() >= 280:
+                self.left_motor.turn_off()
+                break
+
 
 ###############################################################################
 #    ArmAndClaw

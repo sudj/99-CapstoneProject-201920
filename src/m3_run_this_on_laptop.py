@@ -112,6 +112,9 @@ class m3_GUI(object):
         self.title_frame.grid(row=0, column=0)
         self.play_frame.grid(row=1, column=0)
 
+        self.bind_keys()
+
+    def bind_keys(self):
         self.root.bind('<Up>', self.upKey)
         self.root.bind('<Down>', self.downKey)
         self.root.bind('<w>', self.forward)
@@ -164,15 +167,17 @@ class m3_GUI(object):
     def backward(self, event):
         print('backward')
         self.adjust_energy()
+        self.mqtt_sender.send_message('forward', [-int(self.speed), -int(self.speed)])
 
     def left(self, event):
         print('left')
         self.adjust_energy()
-        self.mqtt_sender.send_message('forward', [int(self.speed)/2, int(self.speed)])
+        self.mqtt_sender.send_message('forward', [int(self.speed)/3, int(self.speed)])
 
     def right(self, event):
         print('right')
         self.adjust_energy()
+        self.mqtt_sender.send_message('forward', [int(self.speed), int(self.speed)/3])
 
     def stop(self, event):
         print('stop', 'beep')
@@ -184,12 +189,14 @@ class m3_GUI(object):
             self.energy=0
         self.play_frame.children['!label3'].config(text=str(int(self.energy))+'%')
 
-    def adjust_time(self):
-        self.play_frame.children['!label5'].config(text=str(int(time.time() - self.time_initial)))
-        self.root.after(1000, lambda: self.adjust_time())
+    def loop(self):
+        self.play_frame.children['!label5'].config(text= str(int(time.time() - self.time_initial)))
+        self.root.after(500, lambda: self.loop())
+        self.mqtt_sender.send_message('m3_color')
+        self.mqtt_sender.send_message('m3_banana')
 
     def open(self):
-        self.root.after(1000, lambda: self.adjust_time())
+        self.root.after(500, lambda: self.loop())
         self.root.mainloop()
 
 GUI = m3_GUI()

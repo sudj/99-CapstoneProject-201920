@@ -139,7 +139,6 @@ class DelegateThatReceives(object):
         self.robot.drive_system.spin_counterclockwise_until_sees_object(35, 200)
         self.ir_test(1.5)
 
-
     def camera(self):
         print(self.robot.drive_system.display_camera_data())
 
@@ -151,8 +150,6 @@ class DelegateThatReceives(object):
 
     def led_system(self, rate, initial):
         m3_extra.led(rate, initial, self.robot)
-
-
 
     def pick_up_water(self):
         print('Test')
@@ -190,3 +187,25 @@ class DelegateThatReceives(object):
 
     def m1_eat(self):
         self.cat.eat()
+
+    def m3_color(self):
+        print( self.robot.sensor_system.color_sensor.get_color_as_name())
+        if self.robot.sensor_system.color_sensor.get_color_as_name() == 'Red':
+            start_time = time.time()
+            self.forward(100, 100)
+            while True:
+                if time.time() - start_time >= 3:
+                    self.robot.drive_system.go(0,0)
+                    print('here')
+                    break
+        print('done')
+
+    def m3_banana(self):
+        blob = self.robot.camera.get_biggest_blob()
+        if blob.center.x >=140 and blob.center.x<= 190 and blob.width >=30:
+            start_time = time.time()
+            self.forward(0, 0)
+            while True:
+                if time.time() - start_time >= 3:
+                    break
+            self.robot.drive_system.m3_spin()
