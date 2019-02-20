@@ -31,6 +31,8 @@ def real_thing(robot):
 
     while True:
         time.sleep(0.01)
+        if robot.sensor_system.color_sensor.get_color_as_name() == 'Blue':
+            mqtt_receiver.send_message('eating_time')
         if delagate_receiver.is_quit():
             break
 

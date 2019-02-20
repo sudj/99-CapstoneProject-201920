@@ -26,6 +26,9 @@ def main():
     # -------------------------------------------------------------------------
     mqtt_sender = com.MqttClient()
     mqtt_sender.connect_to_ev3()
+    delagate = Delegate_on_laptop()
+    mqtt_receiver = com.MqttClient(delagate)
+    mqtt_receiver.connect_to_ev3()
 
 
     # -------------------------------------------------------------------------
@@ -164,6 +167,7 @@ def handle_sleep(mqtt_sender, play_progress, eat_progress):
         eat_progress.update()
         messagebox.showinfo('Good Morning', 'Robo-Cat just woke up and it looks like it is ready to start its day')
 
+
     else:
         mqtt_sender.send_message('m1_cry')
         messagebox.showinfo('Error', 'You need to play or feed your cat!')
@@ -183,6 +187,10 @@ def m1_cry(self):
 
 def m1_nap(self):
     self.cet.nap()
+
+class Delegate_on_laptop(object):
+    def eating_time(self):
+        print('This food looks yummy!')
 
 
 

@@ -1,6 +1,6 @@
 import time
 import rosebot
-
+import mqtt_remote_method_calls as com
 
 class Cat(object):
     def __init__(self, robot):
@@ -33,16 +33,9 @@ class Cat(object):
             time.sleep(10)
 
     def nap(self):
-        if self.robot.sensor_system.color_sensor.get_ambient_light_intensity() >= 30:
-            print(self.robot.sensor_system.color_sensor.get_ambient_light_intensity())
-            print('It needs to be night for your cat to sleep')
-        else:
-            print(self.robot.sensor_system.color_sensor.get_ambient_light_intensity())
-            self.robot.sound_system.speech_maker.speak('Time to sleep')
-            self.robot.drive_system.go(100, 80)
-            while True:
-                if self.robot.sensor_system.color_sensor.get_color_as_name() is 'Red':
-                    self.robot.drive_system.stop()
+        self.robot.sound_system.speech_maker.speak('Time to sleep')
+
+
     def cry(self):
         for k in range(5):
             self.robot.sound_system.speech_maker.speak('meow').wait()
@@ -52,8 +45,7 @@ class Cat(object):
         while True:
             if self.robot.sensor_system.color_sensor.get_color_as_name() is 'Blue':
                 break
-                self.robot.drive_system.stop()
-
+        self.robot.drive_system.stop()
         self.robot.sound_system.speech_maker.speak('yum yum yum')
 
 
