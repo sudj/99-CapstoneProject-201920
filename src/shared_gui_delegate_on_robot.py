@@ -196,16 +196,16 @@ class DelegateThatReceives(object):
             while True:
                 if time.time() - start_time >= 3:
                     self.robot.drive_system.go(0,0)
-                    print('here')
                     break
-        print('done')
 
     def m3_banana(self):
         blob = self.robot.camera.get_biggest_blob()
         if blob.center.x >=140 and blob.center.x<= 190 and blob.width >=30:
             start_time = time.time()
             self.forward(0, 0)
+            self.raise_arm()
             while True:
                 if time.time() - start_time >= 3:
                     break
             self.robot.drive_system.m3_spin()
+            self.lower_arm()

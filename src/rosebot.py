@@ -344,7 +344,7 @@ class DriveSystem(object):
 
     def m3_spin(self):
         self.left_motor.reset_position()
-        self.left_motor.turn_on(40)
+        self.left_motor.turn_on(50)
         while True:
             print(self.left_motor.get_position())
             if self.left_motor.get_position() >= 280:

@@ -35,13 +35,14 @@ def main():
     # -------------------------------------------------------------------------
     # The main frame, upon which the other frames are placed.
     # -------------------------------------------------------------------------
-    main_frame = ttk.Frame(root, padding = 10, borderwidth = 5, relief='groove')
+    main_frame = ttk.Frame(root, padding=10, borderwidth=5, relief='groove')
     main_frame.grid()
 
     # -------------------------------------------------------------------------
     # Sub-frames for the shared GUI that the team developed:
     # -------------------------------------------------------------------------
-    teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame, led_frame = get_shared_frames(main_frame, mqtt_sender)
+    teleop_frame, arm_frame, control_frame, drive_system_frame, beep_frame, camera_frame, led_frame = get_shared_frames(
+        main_frame, mqtt_sender)
 
     # -------------------------------------------------------------------------
     # Frames that are particular to my individual contributions to the project.
@@ -64,7 +65,7 @@ def get_shared_frames(main_frame, mqtt_sender):
     arm_frame = shared_gui.get_arm_frame(main_frame, mqtt_sender)
     control_frame = shared_gui.get_control_frame(main_frame, mqtt_sender)
     drive_system_frame = shared_gui.get_drive_system_frame(main_frame, mqtt_sender)
-    beep_frame = shared_gui.beep_frame(main_frame,mqtt_sender)
+    beep_frame = shared_gui.beep_frame(main_frame, mqtt_sender)
     camera_frame = shared_gui.camera_frame(main_frame, mqtt_sender)
     led_frame = shared_gui.led_frame(main_frame, mqtt_sender)
 
@@ -88,12 +89,15 @@ def grid_frames(teleop_frame, arm_frame, control_frame, drive_system_frame, beep
 
 class m3_GUI(object):
     def __init__(self):
-        self.mqtt_sender = com.MqttClient()
+        self.delegate = Delegate_on_laptop()
+
+        self.mqtt_sender = com.MqttClient(self.delegate)
         self.mqtt_sender.connect_to_ev3()
         # Declaring variables
         self.time_initial = time.time()
-        self.energy=100
-        self.speed=0
+        self.energy = 100
+        self.speed = 0
+        self.laps_to_go = 3
 
         self.root = tkinter.Tk()
         self.root.title('CSSE120 Capstone Project')
@@ -102,7 +106,7 @@ class m3_GUI(object):
         self.main_frame.grid()
 
         # Creates the title frame
-        self.title_frame=ttk.Frame(self.main_frame, padding=10, borderwidth=5, relief="ridge")
+        self.title_frame = ttk.Frame(self.main_frame, padding=10, borderwidth=5, relief="ridge")
         title_label = tkinter.Label(self.title_frame, text='ROBO-KART', font=("Cooper Black", 33), fg='goldenrod')
         title_label.grid()
 
@@ -133,6 +137,8 @@ class m3_GUI(object):
         energy = ttk.Label(self.play_frame, text='100%', font=("Times New Roman", 15), padding=30)
         time_label = ttk.Label(self.play_frame, text='Time elapsed: ', font=("Times New Roman", 15), padding=30)
         time = ttk.Label(self.play_frame, text='0', font=("Times New Roman", 15), padding=30)
+        laps_label = ttk.Label(self.play_frame, text='Laps to go:', font=("Times New Roman", 15), padding=30)
+        laps = ttk.Label(self.play_frame, text='3', font=("Times New Roman", 15), padding=30)
 
         speed_label.grid(row=0, column=0)
         scale.grid(row=0, column=1)
@@ -140,13 +146,15 @@ class m3_GUI(object):
         energy.grid(row=1, column=1)
         time_label.grid(row=3, column=0)
         time.grid(row=3, column=1)
+        laps_label.grid(row=4, column=0)
+        laps.grid(row=4, column=1)
 
     def print_value(self, val):
         self.speed = int(val)
         print('speed:', val)
 
     def upKey(self, event):
-        print('Up', self.speed)
+        print('Up')
         self.speed = int(self.speed) + 1
         if self.speed > 100:
             self.speed = 100
@@ -172,32 +180,41 @@ class m3_GUI(object):
     def left(self, event):
         print('left')
         self.adjust_energy()
-        self.mqtt_sender.send_message('forward', [int(self.speed)/3, int(self.speed)])
+        self.mqtt_sender.send_message('forward', [int(self.speed) / 3, int(self.speed)])
 
     def right(self, event):
         print('right')
         self.adjust_energy()
-        self.mqtt_sender.send_message('forward', [int(self.speed), int(self.speed)/3])
+        self.mqtt_sender.send_message('forward', [int(self.speed), int(self.speed) / 3])
 
     def stop(self, event):
         print('stop', 'beep')
-        self.mqtt_sender.send_message('forward', [0,0])
+        self.mqtt_sender.send_message('forward', [0, 0])
+        self.mqtt_sender.send_message('beep', [1])
 
     def adjust_energy(self):
-        self.energy =self.energy-(.001*int(self.speed))
-        if self.energy<=0:
-            self.energy=0
-        self.play_frame.children['!label3'].config(text=str(int(self.energy))+'%')
+        self.energy = self.energy - (.001 * int(self.speed))
+        if self.energy <= 0:
+            self.energy = 0
+            self.mqtt_sender.send_message('phrase', ['good bye'])
+            self.mqtt_sender.send_message('is_quit')
+        self.play_frame.children['!label3'].config(text=str(int(self.energy)) + '%')
 
     def loop(self):
-        self.play_frame.children['!label5'].config(text= str(int(time.time() - self.time_initial)))
-        self.root.after(500, lambda: self.loop())
+        self.play_frame.children['!label5'].config(text=str(int(time.time() - self.time_initial)))
         self.mqtt_sender.send_message('m3_color')
         self.mqtt_sender.send_message('m3_banana')
+        self.root.after(500, lambda: self.loop())
 
     def open(self):
         self.root.after(500, lambda: self.loop())
         self.root.mainloop()
+
+class Delegate_on_laptop(object):
+    def __init__(self):
+        pass
+
+
 
 GUI = m3_GUI()
 GUI.open()
