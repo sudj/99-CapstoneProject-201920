@@ -10,7 +10,7 @@ class Cat(object):
     def play_till(self, play_entry):
         for k in range(play_entry // 32):
             self.robot.drive_system.spin_counterclockwise_until_sees_object(60, 150)
-            self.robot.drive_system.go(40, -40)
+            self.robot.drive_system.go(-40, 40)
             time.sleep(1.5)
             self.robot.drive_system.stop()
             inch = self.robot.sensor_system.ir_proximity_sensor.get_distance_in_inches()
@@ -35,12 +35,12 @@ class Cat(object):
     def nap(self):
         self.robot.sound_system.speech_maker.speak('Time to sleep')
 
-
     def cry(self):
         for k in range(5):
             self.robot.sound_system.speech_maker.speak('meow').wait()
 
     def eat(self):
+        self.robot.drive_system.go(20,20)
         while True:
             if self.robot.sensor_system.color_sensor.get_color_as_name() is 'Blue':
                 break
